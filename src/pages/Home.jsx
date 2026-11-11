@@ -71,7 +71,6 @@ export default function Home() {
           <div style={styles.avatarCircle}>
             <span style={styles.avatarInitials}>PC</span>
           </div>
-          <div style={styles.activeDot} />
         </div>
       </header>
 
@@ -147,15 +146,5 @@ const styles = {
     fontSize: '13px',
     fontWeight: '700',
     letterSpacing: '0.02em',
-  },
-  activeDot: {
-    position: 'absolute',
-    bottom: '0px',
-    right: '0px',
-    width: '10px',
-    height: '10px',
-    borderRadius: '50%',
-    backgroundColor: '#1B8754',
-    border: '2px solid #FFFFFF',
   },
 }

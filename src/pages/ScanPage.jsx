@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { uploadReceipt, processReceipt, saveReceipt } from '../api/receipts.js'
+import { uploadManyReceipts, processPages, saveReceipt } from '../api/receipts.js'
 
 const CATEGORIES = ['Groceries', 'Restaurant', 'Utilities', 'Transport', 'Others']
+const MAX_FILES = 10
 
 export default function ScanPage() {
   const navigate = useNavigate()
@@ -10,8 +11,8 @@ export default function ScanPage() {
 
   const [step, setStep] = useState('idle') // 'idle' | 'uploading' | 'processing' | 'review' | 'saving' | 'done'
   const [uploadProgress, setUploadProgress] = useState(0)
-  const [previewUrl, setPreviewUrl] = useState(null)
-  const [uploadId, setUploadId] = useState(null)
+  const [previewUrls, setPreviewUrls] = useState([])   // one per selected file
+  const [uploadIds, setUploadIds] = useState([])        // ordered upload_ids from backend
   const [error, setError] = useState(null)
 
   // Review form state
@@ -23,27 +24,39 @@ export default function ScanPage() {
   const [rawOcrText, setRawOcrText] = useState('')
 
   const handleFileSelect = (e) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
 
-    setPreviewUrl(URL.createObjectURL(file))
-    startUploadAndOcr(file)
+    if (files.length > MAX_FILES) {
+      setError(`You can upload at most ${MAX_FILES} pages at once.`)
+      return
+    }
+
+    setPreviewUrls(files.map((f) => URL.createObjectURL(f)))
+    startUploadAndOcr(files)
   }
 
-  const startUploadAndOcr = async (file) => {
+  const startUploadAndOcr = async (files) => {
     setError(null)
     setStep('uploading')
     setUploadProgress(0)
 
     try {
-      // Step 1: Upload
-      const uploadRes = await uploadReceipt(file, (pct) => setUploadProgress(pct))
-      const uid = uploadRes.upload_id
-      setUploadId(uid)
+      // Step 1: Upload all pages in one request
+      const uploadRes = await uploadManyReceipts(files, (pct) => setUploadProgress(pct))
+      const ids = uploadRes.uploads.map((u) => u.upload_id)
+      setUploadIds(ids)
 
-      // Step 2: OCR Extraction
+      // Warn if any page is a duplicate of an already-saved receipt
+      const duplicates = uploadRes.uploads.filter((u) => u.already_saved_receipt_id)
+      if (duplicates.length) {
+        const names = duplicates.map((u) => u.filename).join(', ')
+        setError(`Warning: ${names} appear identical to a previously saved receipt.`)
+      }
+
+      // Step 2: OCR — single page fast path, multi-page merged path
       setStep('processing')
-      const ocrRes = await processReceipt(uid)
+      const ocrRes = await processPages(ids)
 
       if (ocrRes.is_receipt === false) {
         setError(ocrRes.rejection_reason || 'The image does not appear to be a receipt.')
@@ -52,7 +65,9 @@ export default function ScanPage() {
       }
 
       setVendorName(ocrRes.vendor_name || 'Super Mart')
-      setReceiptDate(ocrRes.date || new Date().toISOString().split('T')[0])
+      // receipt_date is the backend-parsed ISO "YYYY-MM-DD" string — correct format for <input type="date">
+      // ocrRes.date is raw OCR text (e.g. "12 Nov 2026") which the date input cannot parse
+      setReceiptDate(ocrRes.receipt_date || new Date().toISOString().split('T')[0])
       setTotalAmount(ocrRes.total != null ? String(ocrRes.total) : '0')
       setCategory(ocrRes.category || 'Groceries')
       setItems(ocrRes.items || [])
@@ -72,7 +87,7 @@ export default function ScanPage() {
 
     try {
       await saveReceipt({
-        upload_id: uploadId,
+        upload_ids: uploadIds,
         vendor_name: vendorName.trim() || 'Unknown Vendor',
         date: receiptDate || null,
         total: parseFloat(totalAmount) || 0.0,
@@ -118,7 +133,7 @@ export default function ScanPage() {
             className="btn btn-outline"
             onClick={() => {
               setStep('idle')
-              setPreviewUrl(null)
+              setPreviewUrls([])
             }}
           >
             Scan Another Receipt
@@ -156,7 +171,7 @@ export default function ScanPage() {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              capture="environment"
+              multiple
               style={{ display: 'none' }}
               onChange={handleFileSelect}
             />
@@ -167,9 +182,9 @@ export default function ScanPage() {
               </svg>
             </div>
             <h3 style={styles.dropTitle}>Take Photo or Upload Receipt</h3>
-            <p style={styles.dropSub}>Click to browse or capture an image</p>
+            <p style={styles.dropSub}>Select one or multiple pages (up to {MAX_FILES})</p>
             <div style={styles.formatBadge}>
-              JPG, PNG, HEIC &bull; Max 10 MB
+              JPG, PNG, HEIC &bull; Max 10 MB each
             </div>
           </div>
         </div>
@@ -178,8 +193,16 @@ export default function ScanPage() {
       {/* Step 2: Uploading Progress */}
       {step === 'uploading' && (
         <div style={styles.loadingCard}>
-          {previewUrl && <img src={previewUrl} alt="Receipt preview" style={styles.previewImage} />}
-          <h3 style={styles.loadingTitle}>Uploading Receipt</h3>
+          {previewUrls.length > 0 && (
+            <div style={styles.previewStrip}>
+              {previewUrls.map((url, i) => (
+                <img key={i} src={url} alt={`Page ${i + 1}`} style={styles.previewImage} />
+              ))}
+            </div>
+          )}
+          <h3 style={styles.loadingTitle}>
+            Uploading {previewUrls.length > 1 ? `${previewUrls.length} pages` : 'Receipt'}
+          </h3>
           <div style={styles.progressBar}>
             <div style={{ ...styles.progressFill, width: `${uploadProgress}%` }} />
           </div>
@@ -190,19 +213,40 @@ export default function ScanPage() {
       {/* Step 3: OCR Processing */}
       {step === 'processing' && (
         <div style={styles.loadingCard}>
-          {previewUrl && <img src={previewUrl} alt="Receipt preview" style={styles.previewImage} />}
+          {previewUrls.length > 0 && (
+            <div style={styles.previewStrip}>
+              {previewUrls.map((url, i) => (
+                <img key={i} src={url} alt={`Page ${i + 1}`} style={styles.previewImage} />
+              ))}
+            </div>
+          )}
           <div className="spinner" style={{ margin: '14px 0 10px' }} />
           <h3 style={styles.loadingTitle}>Digitizing Receipt Data</h3>
-          <p style={styles.loadingSub}>Analyzing merchant, transaction date, line items, and tax totals...</p>
+          <p style={styles.loadingSub}>
+            {previewUrls.length > 1
+              ? `Analyzing ${previewUrls.length} pages — merging items, totals and dates...`
+              : 'Analyzing merchant, transaction date, line items, and tax totals...'}
+          </p>
         </div>
       )}
 
       {/* Step 4: Review and Confirm */}
       {(step === 'review' || step === 'saving') && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          {previewUrl && (
+          {previewUrls.length > 0 && (
             <div style={styles.previewCard}>
-              <img src={previewUrl} alt="Receipt" style={styles.reviewImage} />
+              {previewUrls.length === 1 ? (
+                <img src={previewUrls[0]} alt="Receipt" style={styles.reviewImage} />
+              ) : (
+                <div style={styles.previewStrip}>
+                  {previewUrls.map((url, i) => (
+                    <div key={i} style={{ position: 'relative', flex: '0 0 auto' }}>
+                      <img src={url} alt={`Page ${i + 1}`} style={styles.reviewImage} />
+                      <span style={styles.pageBadge}>p{i + 1}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -442,6 +486,24 @@ const styles = {
     border: '1px solid #E5E9F0',
     display: 'flex',
     justifyContent: 'center',
+    overflowX: 'auto',
+  },
+  previewStrip: {
+    display: 'flex',
+    gap: '8px',
+    overflowX: 'auto',
+    width: '100%',
+  },
+  pageBadge: {
+    position: 'absolute',
+    top: '4px',
+    left: '4px',
+    backgroundColor: 'rgba(57, 120, 184, 0.85)',
+    color: '#fff',
+    fontSize: '10px',
+    fontWeight: '700',
+    borderRadius: '4px',
+    padding: '1px 5px',
   },
   reviewImage: {
     width: '100%',

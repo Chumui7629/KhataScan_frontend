@@ -50,7 +50,7 @@ export async function getReceipt(id) {
 }
 
 /**
- * Upload a receipt image (Step 1).
+ * Upload a single receipt image (Step 1).
  * @param {File} file
  * @param {function} [onProgress]
  */
@@ -63,6 +63,38 @@ export async function uploadReceipt(file, onProgress) {
       if (onProgress && e.total) onProgress(Math.round((e.loaded * 100) / e.total))
     },
   })
+  return data
+}
+
+/**
+ * Upload multiple receipt images at once (Step 1, multi-page variant).
+ * Uses POST /receipts/upload-many; returns { uploads: UploadResponse[] }.
+ * @param {File[]} files
+ * @param {function} [onProgress]  receives 0–100
+ */
+export async function uploadManyReceipts(files, onProgress) {
+  const form = new FormData()
+  files.forEach((f) => form.append('files', f))
+  const { data } = await client.post('/receipts/upload-many', form, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: (e) => {
+      if (onProgress && e.total) onProgress(Math.round((e.loaded * 100) / e.total))
+    },
+  })
+  return data // { uploads: [{ upload_id, filename, size_kb, already_saved_receipt_id }] }
+}
+
+/**
+ * Process (OCR) multiple uploaded pages as one invoice (Step 2, multi-page variant).
+ * Uses POST /receipts/process-pages; returns a single merged ProcessResponse.
+ * @param {string[]} uploadIds  - ordered list of upload_ids from uploadManyReceipts
+ * @param {object} [options]
+ * @param {boolean} [options.force=false]
+ */
+export async function processPages(uploadIds, { force = false } = {}) {
+  const params = {}
+  if (force) params.force = true
+  const { data } = await client.post('/receipts/process-pages', { upload_ids: uploadIds }, { params })
   return data
 }
 

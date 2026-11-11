@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-const ACTIVE_COLOR = '#172B4D'      // Primary Deep Navy
-const INACTIVE_COLOR = '#8792A2'    // Muted Grey
+const ACTIVE_COLOR = '#007AFF'    // iOS Blue
+const INACTIVE_COLOR = '#8E8E93'  // iOS Secondary Label Grey
 
 function HomeIcon({ active }) {
   const color = active ? ACTIVE_COLOR : INACTIVE_COLOR
@@ -26,26 +26,12 @@ function ReceiptsIcon({ active }) {
   )
 }
 
-function ScanIcon({ active }) {
+function ScanCameraIcon() {
   return (
-    <div
-      style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '12px',
-        backgroundColor: active ? '#172B4D' : '#3978B8',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 2px 8px rgba(57, 120, 184, 0.25)',
-        transition: 'all 0.15s ease',
-      }}
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-        <circle cx="12" cy="13" r="4" />
-      </svg>
-    </div>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+      <circle cx="12" cy="13" r="4" />
+    </svg>
   )
 }
 
@@ -75,7 +61,7 @@ export default function BottomNav() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  const tabs = [
+  const regularTabs = [
     {
       id: 'home',
       label: 'Home',
@@ -90,15 +76,16 @@ export default function BottomNav() {
       isActive: pathname.startsWith('/receipts'),
       Icon: ReceiptsIcon,
     },
-    {
-      id: 'scan',
-      label: 'Scan',
-      ariaLabel: 'Scan receipt',
-      path: '/scan',
-      isActive: pathname === '/scan',
-      Icon: ScanIcon,
-      isSpecial: true,
-    },
+  ]
+
+  const scanTab = {
+    id: 'scan',
+    label: 'Scan',
+    path: '/scan',
+    isActive: pathname === '/scan',
+  }
+
+  const rightTabs = [
     {
       id: 'analytics',
       label: 'Analytics',
@@ -115,30 +102,137 @@ export default function BottomNav() {
     },
   ]
 
+  const allTabs = [
+    ...regularTabs,
+    scanTab,
+    ...rightTabs,
+  ]
+
   return (
-    <nav style={styles.navContainer} aria-label="Main Navigation">
-      <div style={styles.navBar}>
-        {tabs.map((tab) => {
-          const { Icon, isActive, label, ariaLabel, path, id, isSpecial } = tab
+    <nav
+      aria-label="Main Navigation"
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '100%',
+        maxWidth: '393px',
+        backgroundColor: 'rgba(249,249,249,0.94)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderTop: '0.5px solid rgba(0,0,0,0.15)',
+        zIndex: 100,
+        boxSizing: 'border-box',
+      }}
+    >
+      {/* Tab Row */}
+      <div
+        style={{
+          height: '63px',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'space-around',
+          padding: '0 4px 10px',
+          boxSizing: 'border-box',
+          width: '100%',
+        }}
+      >
+        {allTabs.map((tab) => {
+          const isScan = tab.id === 'scan'
+
+          if (isScan) {
+            return (
+              <button
+                key="scan"
+                onClick={() => navigate(scanTab.path)}
+                aria-label="Scan receipt"
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '0',
+                  gap: '3px',
+                  position: 'relative',
+                }}
+              >
+                {/* Raised circle — lifted above the bar */}
+                <div
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '50%',
+                    backgroundColor: scanTab.isActive ? '#005EC4' : '#007AFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 16px rgba(0, 122, 255, 0.45)',
+                    marginBottom: '2px',
+                    marginTop: '-14px',
+                    flexShrink: 0,
+                    transition: 'background-color 0.15s ease, box-shadow 0.15s ease',
+                  }}
+                >
+                  <ScanCameraIcon />
+                </div>
+                <span
+                  style={{
+                    fontSize: '10px',
+                    fontWeight: scanTab.isActive ? '600' : '500',
+                    color: scanTab.isActive ? ACTIVE_COLOR : INACTIVE_COLOR,
+                    letterSpacing: '-0.1px',
+                    lineHeight: '1.2',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  Scan
+                </span>
+              </button>
+            )
+          }
+
+          const { Icon, isActive, label, path, id } = tab
           return (
             <button
               key={id}
-              style={{
-                ...styles.navButton,
-                marginTop: isSpecial ? '-8px' : '0',
-              }}
               onClick={() => navigate(path)}
-              aria-label={ariaLabel || label}
+              aria-label={label}
+              style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+                gap: '3px',
+              }}
             >
-              <div style={styles.iconWrapper}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '28px',
+                }}
+              >
                 <Icon active={isActive} />
               </div>
               <span
                 style={{
-                  ...styles.navLabel,
-                  color: isActive ? ACTIVE_COLOR : INACTIVE_COLOR,
+                  fontSize: '10px',
                   fontWeight: isActive ? '600' : '500',
-                  marginTop: isSpecial ? '2px' : '3px',
+                  color: isActive ? ACTIVE_COLOR : INACTIVE_COLOR,
+                  letterSpacing: '-0.1px',
+                  lineHeight: '1.2',
+                  fontFamily: 'inherit',
                 }}
               >
                 {label}
@@ -147,59 +241,25 @@ export default function BottomNav() {
           )
         })}
       </div>
+
+      {/* iOS Home Indicator */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingBottom: '8px',
+        }}
+      >
+        <div
+          style={{
+            width: '134px',
+            height: '4px',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            borderRadius: '2px',
+          }}
+        />
+      </div>
     </nav>
   )
-}
-
-const styles = {
-  navContainer: {
-    position: 'fixed',
-    bottom: 0,
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: '100%',
-    maxWidth: '640px',
-    backgroundColor: 'rgba(255, 255, 255, 0.98)',
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
-    borderTop: '1px solid #E5E9F0',
-    zIndex: 100,
-    paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-    boxSizing: 'border-box',
-    boxShadow: '0 -2px 12px rgba(23, 43, 77, 0.04)',
-  },
-  navBar: {
-    height: '64px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    padding: '0 8px',
-    boxSizing: 'border-box',
-    width: '100%',
-  },
-  navButton: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: '4px 0',
-    minWidth: '0',
-    transition: 'opacity 0.15s ease',
-  },
-  iconWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '24px',
-  },
-  navLabel: {
-    fontSize: '11px',
-    letterSpacing: '-0.1px',
-    lineHeight: '1.2',
-    fontFamily: 'inherit',
-  },
 }

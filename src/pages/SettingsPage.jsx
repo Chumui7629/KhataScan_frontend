@@ -19,7 +19,6 @@ export default function SettingsPage() {
               <div style={styles.avatarCircle}>
                 <span style={styles.avatarInitials}>PC</span>
               </div>
-              <div style={styles.activeDot} />
             </div>
             <div style={styles.profileText}>
               <div style={styles.nameRow}>
@@ -85,7 +84,7 @@ export default function SettingsPage() {
 
           <div style={styles.infoRow}>
             <span style={styles.infoKey}>Build Version</span>
-            <span style={styles.infoValue}>2.0.0 (Production)</span>
+            <span style={styles.infoValue}>1.0 (Production)</span>
           </div>
 
           <div style={styles.infoRow}>
@@ -166,16 +165,6 @@ const styles = {
     fontSize: '16px',
     fontWeight: '700',
     letterSpacing: '0.02em',
-  },
-  activeDot: {
-    position: 'absolute',
-    bottom: '0',
-    right: '0',
-    width: '11px',
-    height: '11px',
-    borderRadius: '50%',
-    backgroundColor: '#1B8754',
-    border: '2px solid #FFFFFF',
   },
   profileText: {
     display: 'flex',

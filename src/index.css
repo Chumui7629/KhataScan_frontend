@@ -5,28 +5,28 @@
   --secondary: #3978B8;           /* Muted Blue */
   --secondary-hover: #2F659C;
   --secondary-light: #EBF2F9;
-  
-  --bg-app: #F7F8FA;              /* Off White */
+
+  --bg-app: #F2F2F7;              /* iOS System Background */
   --surface: #FFFFFF;             /* Pure White */
-  --surface-alt: #FAFBFC;
-  
-  --text-dark: #202938;           /* Dark Charcoal */
-  --text-muted: #8792A2;          /* Muted Grey */
-  --text-subtle: #A0AEC0;
-  
-  --border-color: #E5E9F0;        /* Light Grey */
-  --border-subtle: #EEF2F6;
-  
+  --surface-alt: #F9F9F9;
+
+  --text-dark: #1C1C1E;           /* iOS Dark Text */
+  --text-muted: #8E8E93;          /* iOS Secondary Label */
+  --text-subtle: #AEAEB2;
+
+  --border-color: #E5E5EA;        /* iOS Separator */
+  --border-subtle: #F2F2F7;
+
   /* Status Semantics */
-  --success: #1B8754;             /* Soft Green */
+  --success: #34C759;             /* iOS Green */
   --success-bg: #E8F5E9;
-  --warning: #B45309;             /* Soft Amber */
-  --warning-bg: #FEF3C7;
-  --error: #D32F2F;               /* Muted Red */
+  --warning: #FF9500;             /* iOS Orange */
+  --warning-bg: #FFF3E0;
+  --error: #FF3B30;               /* iOS Red */
   --error-bg: #FEE2E2;
 
   /* Typography & Layout */
-  --font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family: -apple-system, "SF Pro Display", "SF Pro Text", BlinkMacSystemFont, sans-serif;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
@@ -44,7 +44,7 @@ html,
 body {
   height: 100%;
   width: 100%;
-  background-color: var(--bg-app);
+  background-color: #000000;
   font-family: var(--font-family);
   color: var(--text-dark);
   -webkit-font-smoothing: antialiased;
@@ -56,29 +56,46 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: stretch;
-  background-color: var(--bg-app);
+  align-items: flex-start;
+  background-color: #000000;
 }
 
-/* Responsive Fintech App Container */
+/* Dynamic Island */
+.dynamic-island {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 126px;
+  height: 37px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Status Bar */
+.status-bar {
+  height: 59px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  justify-content: space-between;
+  background-color: #F2F2F7;
+}
+
+/* iPhone 18 App Container */
 .app-container {
   position: relative;
   width: 100%;
-  max-width: 640px;
-  min-height: 100vh;
-  background-color: var(--bg-app);
+  max-width: 393px;
+  min-height: 100dvh;
+  background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-}
-
-@media (max-width: 640px) {
-  .app-container {
-    border-left: none;
-    border-right: none;
-  }
+  border-radius: 0;
+  overflow: hidden;
 }
 
 /* Scrollable Main Viewport */
@@ -87,11 +104,11 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 84px;
+  padding-bottom: 90px;
 }
 
 .page-scroll-area::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 .page-scroll-area::-webkit-scrollbar-track {
@@ -133,7 +150,7 @@ body {
   border-radius: var(--radius-sm);
 }
 
-/* Fintech Buttons */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -150,7 +167,7 @@ body {
 }
 
 .btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .btn-primary {
@@ -176,7 +193,7 @@ body {
 }
 
 .btn-outline {
-  background-color: var(--surface);
+  background-color: #FFFFFF;
   color: var(--text-dark);
   border-color: var(--border-color);
 }
@@ -192,7 +209,7 @@ body {
   padding: 10px 14px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  background-color: var(--surface);
+  background-color: #FFFFFF;
   font-size: 14px;
   font-family: inherit;
   color: var(--text-dark);
@@ -202,8 +219,8 @@ body {
 }
 
 .form-input:focus {
-  border-color: var(--secondary);
-  box-shadow: 0 0 0 3px rgba(57, 120, 184, 0.15);
+  border-color: #007AFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
 }
 
 /* Tabular Financial Numbers */
@@ -225,7 +242,7 @@ body {
   width: 26px;
   height: 26px;
   border: 2.5px solid var(--border-color);
-  border-top-color: var(--secondary);
+  border-top-color: #007AFF;
   border-radius: 50%;
   animation: spinAnim 0.7s linear infinite;
 }
