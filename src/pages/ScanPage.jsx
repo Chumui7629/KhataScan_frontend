@@ -98,26 +98,24 @@ export default function ScanPage() {
 
   if (step === 'done') {
     return (
-      <div className="page-inner" style={{ padding: '30px 20px', textAlign: 'center' }}>
-        <div style={styles.successIconWrap}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-            <polyline points="22 4 12 14.01 9 11.01" />
+      <div className="page-inner" style={{ ...styles.container, textAlign: 'center', paddingTop: '40px' }}>
+        <div style={styles.successIconCircle}>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1B8754" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#0f172a', marginBottom: '8px' }}>
-          Receipt Saved!
+        <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#172B4D', marginBottom: '6px' }}>
+          Receipt Digitized &amp; Saved
         </h2>
-        <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '24px' }}>
-          Your expense has been digitized and added to Khatascan.
+        <p style={{ color: '#8792A2', fontSize: '13.5px', marginBottom: '28px', maxWidth: '280px', margin: '0 auto 28px' }}>
+          Your transaction and item breakdown have been added to your expense records.
         </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <button className="btn btn-primary" onClick={() => navigate('/')} style={{ justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '280px', margin: '0 auto' }}>
+          <button className="btn btn-primary" onClick={() => navigate('/')}>
             Back to Dashboard
           </button>
           <button
-            className="btn"
-            style={{ justifyContent: 'center', backgroundColor: '#f1f5f9', color: '#0f172a' }}
+            className="btn btn-outline"
             onClick={() => {
               setStep('idle')
               setPreviewUrl(null)
@@ -131,28 +129,29 @@ export default function ScanPage() {
   }
 
   return (
-    <div className="page-inner" style={{ padding: '16px 20px 24px' }}>
-      {/* Top Header */}
+    <div className="page-inner" style={styles.container}>
+      {/* Header */}
       <div style={styles.header}>
-        <button style={styles.backButton} onClick={() => navigate(-1)}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <button style={styles.backButton} onClick={() => navigate(-1)} aria-label="Go back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#172B4D" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
+          <span style={styles.backText}>Back</span>
         </button>
         <h2 style={styles.headerTitle}>Scan Receipt</h2>
-        <div style={{ width: '38px' }} />
+        <div style={{ width: '48px' }} />
       </div>
 
       {error && (
         <div style={styles.errorBox}>
-          <span style={{ fontSize: '13.5px', color: '#ef4444' }}>{error}</span>
+          <span style={{ fontSize: '13px', color: '#D32F2F', fontWeight: '500' }}>{error}</span>
         </div>
       )}
 
       {/* Step 1: Upload Prompt */}
       {step === 'idle' && (
         <div>
-          <div style={styles.dropZone} onClick={() => fileInputRef.current?.click()}>
+          <div style={styles.dropZone} onClick={() => fileInputRef.current?.click()} role="button" tabIndex={0}>
             <input
               ref={fileInputRef}
               type="file"
@@ -161,14 +160,17 @@ export default function ScanPage() {
               style={{ display: 'none' }}
               onChange={handleFileSelect}
             />
-            <div style={styles.cameraIconCircle}>
-              <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div style={styles.uploadIconCircle}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3978B8" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                 <circle cx="12" cy="13" r="4" />
               </svg>
             </div>
             <h3 style={styles.dropTitle}>Take Photo or Upload Receipt</h3>
-            <p style={styles.dropSub}>JPG, PNG, or HEIC &bull; Max 10 MB</p>
+            <p style={styles.dropSub}>Click to browse or capture an image</p>
+            <div style={styles.formatBadge}>
+              JPG, PNG, HEIC &bull; Max 10 MB
+            </div>
           </div>
         </div>
       )}
@@ -177,11 +179,11 @@ export default function ScanPage() {
       {step === 'uploading' && (
         <div style={styles.loadingCard}>
           {previewUrl && <img src={previewUrl} alt="Receipt preview" style={styles.previewImage} />}
-          <h3 style={styles.loadingTitle}>Uploading Receipt...</h3>
+          <h3 style={styles.loadingTitle}>Uploading Receipt</h3>
           <div style={styles.progressBar}>
             <div style={{ ...styles.progressFill, width: `${uploadProgress}%` }} />
           </div>
-          <span style={styles.progressPct}>{uploadProgress}%</span>
+          <span style={styles.progressPct} className="tabular-nums">{uploadProgress}% complete</span>
         </div>
       )}
 
@@ -189,57 +191,66 @@ export default function ScanPage() {
       {step === 'processing' && (
         <div style={styles.loadingCard}>
           {previewUrl && <img src={previewUrl} alt="Receipt preview" style={styles.previewImage} />}
-          <div className="spinner" style={{ margin: '16px 0 12px' }} />
-          <h3 style={styles.loadingTitle}>Extracting Data with AI...</h3>
-          <p style={styles.loadingSub}>Recognizing vendor, date, line items, and total</p>
+          <div className="spinner" style={{ margin: '14px 0 10px' }} />
+          <h3 style={styles.loadingTitle}>Digitizing Receipt Data</h3>
+          <p style={styles.loadingSub}>Analyzing merchant, transaction date, line items, and tax totals...</p>
         </div>
       )}
 
       {/* Step 4: Review and Confirm */}
       {(step === 'review' || step === 'saving') && (
-        <div>
-          {previewUrl && <img src={previewUrl} alt="Receipt" style={styles.reviewImage} />}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          {previewUrl && (
+            <div style={styles.previewCard}>
+              <img src={previewUrl} alt="Receipt" style={styles.reviewImage} />
+            </div>
+          )}
 
           <div style={styles.formCard}>
-            <h3 style={styles.formTitle}>Review Extracted Details</h3>
+            <div style={styles.formHeader}>
+              <h3 style={styles.formTitle}>Review Extracted Details</h3>
+              <p style={styles.formSubtitle}>Verify and correct details before saving</p>
+            </div>
 
             <div style={styles.fieldGroup}>
               <label style={styles.fieldLabel}>Merchant Name</label>
               <input
                 type="text"
-                style={styles.fieldInput}
+                className="form-input"
                 value={vendorName}
                 onChange={(e) => setVendorName(e.target.value)}
                 placeholder="e.g. Super Mart"
               />
             </div>
 
-            <div style={styles.fieldGroup}>
-              <label style={styles.fieldLabel}>Date</label>
-              <input
-                type="date"
-                style={styles.fieldInput}
-                value={receiptDate}
-                onChange={(e) => setReceiptDate(e.target.value)}
-              />
-            </div>
+            <div style={styles.fieldRow}>
+              <div style={{ flex: 1 }}>
+                <label style={styles.fieldLabel}>Date</label>
+                <input
+                  type="date"
+                  className="form-input"
+                  value={receiptDate}
+                  onChange={(e) => setReceiptDate(e.target.value)}
+                />
+              </div>
 
-            <div style={styles.fieldGroup}>
-              <label style={styles.fieldLabel}>Total Amount (₹)</label>
-              <input
-                type="number"
-                step="0.01"
-                style={styles.fieldInput}
-                value={totalAmount}
-                onChange={(e) => setTotalAmount(e.target.value)}
-                placeholder="0.00"
-              />
+              <div style={{ flex: 1 }}>
+                <label style={styles.fieldLabel}>Total Amount (₹)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  className="form-input tabular-nums"
+                  value={totalAmount}
+                  onChange={(e) => setTotalAmount(e.target.value)}
+                  placeholder="0.00"
+                />
+              </div>
             </div>
 
             <div style={styles.fieldGroup}>
               <label style={styles.fieldLabel}>Category</label>
               <select
-                style={styles.fieldInput}
+                className="form-input"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -252,12 +263,18 @@ export default function ScanPage() {
             {/* Extracted Line Items */}
             {items.length > 0 && (
               <div style={styles.itemsBlock}>
-                <label style={styles.fieldLabel}>Extracted Items ({items.length})</label>
+                <div style={styles.itemsBlockHeader}>
+                  <label style={{ ...styles.fieldLabel, marginBottom: 0 }}>
+                    Extracted Line Items ({items.length})
+                  </label>
+                </div>
                 <div style={styles.itemsList}>
                   {items.map((it, idx) => (
                     <div key={idx} style={styles.itemRow}>
                       <span style={styles.itemTitle}>{it.name}</span>
-                      <span style={styles.itemPrice}>₹{it.total_price || it.unit_price || 0}</span>
+                      <span style={styles.itemPrice} className="tabular-nums">
+                        ₹{Number(it.total_price || it.unit_price || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -266,11 +283,18 @@ export default function ScanPage() {
 
             <button
               className="btn btn-primary"
-              style={{ width: '100%', justifyContent: 'center', marginTop: '16px', padding: '14px' }}
+              style={{ width: '100%', marginTop: '16px', padding: '12px' }}
               onClick={handleSave}
               disabled={step === 'saving'}
             >
-              {step === 'saving' ? 'Saving Receipt...' : 'Confirm & Save Receipt'}
+              {step === 'saving' ? (
+                <>
+                  <div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px', borderTopColor: '#FFFFFF' }} />
+                  <span>Saving Record...</span>
+                </>
+              ) : (
+                'Confirm & Save Receipt'
+              )}
             </button>
           </div>
         </div>
@@ -280,182 +304,219 @@ export default function ScanPage() {
 }
 
 const styles = {
+  container: {
+    width: '100%',
+    boxSizing: 'border-box',
+  },
   header: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '20px',
+    marginBottom: '16px',
+    paddingTop: '2px',
   },
   backButton: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    padding: '6px',
-    borderRadius: '10px',
-    display: 'flex',
+    padding: '6px 0',
+  },
+  backText: {
+    fontSize: '13.5px',
+    fontWeight: '600',
+    color: '#172B4D',
   },
   headerTitle: {
-    fontSize: '20px',
-    fontWeight: '800',
-    color: '#0f172a',
+    fontSize: '17px',
+    fontWeight: '700',
+    color: '#172B4D',
   },
   errorBox: {
-    backgroundColor: '#fef2f2',
-    border: '1px solid #fee2e2',
-    borderRadius: '14px',
-    padding: '12px 16px',
-    marginBottom: '16px',
+    backgroundColor: '#FEE2E2',
+    border: '1px solid #FECACA',
+    borderRadius: '10px',
+    padding: '10px 14px',
+    marginBottom: '14px',
   },
   dropZone: {
-    backgroundColor: '#ffffff',
-    border: '2px dashed #c7d2fe',
-    borderRadius: '24px',
-    padding: '48px 24px',
+    backgroundColor: '#FFFFFF',
+    border: '1.5px dashed #3978B8',
+    borderRadius: '16px',
+    padding: '40px 20px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
     cursor: 'pointer',
+    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    transition: 'border-color 0.15s ease',
   },
-  cameraIconCircle: {
-    width: '74px',
-    height: '74px',
-    borderRadius: '50%',
-    backgroundColor: '#6366f1',
-    backgroundImage: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+  uploadIconCircle: {
+    width: '56px',
+    height: '56px',
+    borderRadius: '16px',
+    backgroundColor: '#EBF2F9',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0 8px 20px rgba(99, 102, 241, 0.35)',
-    marginBottom: '16px',
+    marginBottom: '14px',
   },
   dropTitle: {
-    fontSize: '17px',
+    fontSize: '16px',
     fontWeight: '700',
-    color: '#0f172a',
-    marginBottom: '6px',
+    color: '#202938',
+    marginBottom: '4px',
   },
   dropSub: {
     fontSize: '13px',
-    color: '#94a3b8',
+    color: '#8792A2',
+    marginBottom: '14px',
+  },
+  formatBadge: {
+    fontSize: '11px',
+    fontWeight: '600',
+    color: '#3978B8',
+    backgroundColor: '#EBF2F9',
+    padding: '4px 10px',
+    borderRadius: '6px',
   },
   loadingCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: '24px',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '16px',
     padding: '24px 20px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
+    border: '1px solid #E5E9F0',
   },
   previewImage: {
     width: '100%',
-    maxHeight: '220px',
+    maxHeight: '200px',
     objectFit: 'contain',
-    borderRadius: '16px',
-    marginBottom: '16px',
+    borderRadius: '12px',
+    marginBottom: '14px',
+    backgroundColor: '#F7F8FA',
+    border: '1px solid #E5E9F0',
   },
   loadingTitle: {
-    fontSize: '17px',
+    fontSize: '15px',
     fontWeight: '700',
-    color: '#0f172a',
-    marginBottom: '6px',
+    color: '#202938',
+    marginBottom: '4px',
   },
   loadingSub: {
-    fontSize: '13px',
-    color: '#94a3b8',
+    fontSize: '12.5px',
+    color: '#8792A2',
+    maxWidth: '260px',
+    lineHeight: '1.4',
   },
   progressBar: {
     width: '100%',
-    height: '8px',
-    backgroundColor: '#f1f5f9',
+    maxWidth: '280px',
+    height: '6px',
+    backgroundColor: '#E5E9F0',
     borderRadius: '9999px',
     overflow: 'hidden',
-    marginTop: '16px',
+    marginTop: '14px',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#6366f1',
+    backgroundColor: '#3978B8',
     borderRadius: '9999px',
-    transition: 'width 0.2s',
+    transition: 'width 0.2s ease',
   },
   progressPct: {
     fontSize: '12px',
-    color: '#64748b',
+    color: '#8792A2',
     marginTop: '6px',
     fontWeight: '600',
+  },
+  previewCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: '16px',
+    padding: '12px',
+    border: '1px solid #E5E9F0',
+    display: 'flex',
+    justifyContent: 'center',
   },
   reviewImage: {
     width: '100%',
     maxHeight: '180px',
     objectFit: 'contain',
-    borderRadius: '16px',
-    marginBottom: '14px',
-    backgroundColor: '#0f172a',
+    borderRadius: '10px',
   },
   formCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: '24px',
-    padding: '20px',
-    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.03)',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '16px',
+    padding: '20px 18px',
+    border: '1px solid #E5E9F0',
+    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
   },
-  formTitle: {
-    fontSize: '17px',
-    fontWeight: '700',
-    color: '#0f172a',
+  formHeader: {
     marginBottom: '16px',
   },
+  formTitle: {
+    fontSize: '15px',
+    fontWeight: '700',
+    color: '#202938',
+  },
+  formSubtitle: {
+    fontSize: '12px',
+    color: '#8792A2',
+    marginTop: '2px',
+  },
   fieldGroup: {
-    marginBottom: '14px',
+    marginBottom: '12px',
+  },
+  fieldRow: {
+    display: 'flex',
+    gap: '12px',
+    marginBottom: '12px',
   },
   fieldLabel: {
     display: 'block',
-    fontSize: '12.5px',
+    fontSize: '11.5px',
     fontWeight: '600',
-    color: '#64748b',
-    marginBottom: '6px',
-  },
-  fieldInput: {
-    width: '100%',
-    padding: '11px 14px',
-    borderRadius: '12px',
-    border: '1.5px solid #e2e8f0',
-    fontSize: '14.5px',
-    color: '#0f172a',
-    backgroundColor: '#f8fafc',
-    boxSizing: 'border-box',
-    fontFamily: 'inherit',
-    outline: 'none',
+    color: '#8792A2',
+    marginBottom: '5px',
   },
   itemsBlock: {
-    marginTop: '12px',
-    marginBottom: '12px',
+    marginTop: '14px',
+    marginBottom: '8px',
+  },
+  itemsBlockHeader: {
+    marginBottom: '6px',
   },
   itemsList: {
-    backgroundColor: '#f8fafc',
-    borderRadius: '12px',
-    padding: '8px 12px',
+    backgroundColor: '#F7F8FA',
+    borderRadius: '10px',
+    padding: '6px 12px',
+    border: '1px solid #E5E9F0',
   },
   itemRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '6px 0',
-    borderBottom: '1px solid #e2e8f0',
-    fontSize: '13px',
+    padding: '7px 0',
+    borderBottom: '1px solid #EEF2F6',
+    fontSize: '12.5px',
   },
   itemTitle: {
-    color: '#334155',
+    color: '#202938',
     fontWeight: '500',
   },
   itemPrice: {
-    color: '#0f172a',
-    fontWeight: '700',
+    color: '#172B4D',
+    fontWeight: '600',
   },
-  successIconWrap: {
-    width: '72px',
-    height: '72px',
+  successIconCircle: {
+    width: '60px',
+    height: '60px',
     borderRadius: '50%',
-    backgroundColor: '#dcfce7',
+    backgroundColor: '#E8F5E9',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',

@@ -1,12 +1,12 @@
 import React from 'react'
 
 const CATEGORY_CONFIG = {
-  Groceries: { color: '#4f46e5', label: 'Groceries' },
-  Restaurant: { color: '#f43f5e', label: 'Restaurant' },
-  Utilities: { color: '#a855f7', label: 'Utilities' },
-  Transport: { color: '#06b6d4', label: 'Transport' },
-  Others: { color: '#64748b', label: 'Others' },
-  Other: { color: '#64748b', label: 'Others' },
+  Groceries: { color: '#172B4D', label: 'Groceries' },
+  Restaurant: { color: '#3978B8', label: 'Restaurant' },
+  Utilities: { color: '#1B8754', label: 'Utilities' },
+  Transport: { color: '#D97706', label: 'Transport' },
+  Others: { color: '#8792A2', label: 'Others' },
+  Other: { color: '#8792A2', label: 'Others' },
 }
 
 const DEFAULT_CATEGORIES = [
@@ -18,14 +18,14 @@ const DEFAULT_CATEGORIES = [
 ]
 
 function formatINR(val) {
-  if (val === null || val === undefined) return '₹0'
-  return '₹' + Math.round(val).toLocaleString('en-IN')
+  if (val === null || val === undefined) return '₹ 0'
+  return '₹ ' + Math.round(val).toLocaleString('en-IN')
 }
 
 /* Precision SVG Doughnut Chart */
 function DoughnutChart({ data, total }) {
-  const size = 120
-  const strokeWidth = 18
+  const size = 116
+  const strokeWidth = 14
   const radius = (size - strokeWidth) / 2
   const center = size / 2
   const circumference = 2 * Math.PI * radius
@@ -62,7 +62,7 @@ function DoughnutChart({ data, total }) {
       {/* Centered Total Label */}
       <div style={styles.centerBadge}>
         <span style={styles.centerSub}>TOTAL</span>
-        <span style={styles.centerTotal}>{formatINR(total)}</span>
+        <span style={styles.centerTotal} className="tabular-nums">{formatINR(total)}</span>
       </div>
     </div>
   )
@@ -74,18 +74,18 @@ export default function MoneyGoesCard({ data, loading = false }) {
 
   return (
     <div style={styles.card}>
-      {/* Title & Badge Header */}
+      {/* Header */}
       <div style={styles.headerRow}>
         <div>
           <h3 style={styles.title}>Where Your Money Goes</h3>
-          <p style={styles.subtitle}>Category spending distribution</p>
+          <p style={styles.subtitle}>Category spending breakdown</p>
         </div>
-        <span style={styles.badge}>This Month</span>
+        <span style={styles.badge}>Monthly</span>
       </div>
 
       {loading ? (
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center', padding: '12px 0' }}>
-          <div className="skeleton" style={{ width: '120px', height: '120px', borderRadius: '50%' }} />
+          <div className="skeleton" style={{ width: '116px', height: '116px', borderRadius: '50%', flexShrink: 0 }} />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="skeleton" style={{ width: '100%', height: '14px' }} />
@@ -93,7 +93,6 @@ export default function MoneyGoesCard({ data, loading = false }) {
           </div>
         </div>
       ) : (
-        /* Side-by-side: Donut Chart on Left, Legend List on Right */
         <div style={styles.contentRow}>
           {/* Doughnut Chart */}
           <div style={styles.chartCol}>
@@ -106,16 +105,14 @@ export default function MoneyGoesCard({ data, loading = false }) {
               const cfg = CATEGORY_CONFIG[item.category] || CATEGORY_CONFIG.Others
               return (
                 <div key={item.category} style={styles.legendRow}>
-                  {/* Category dot and name */}
                   <div style={styles.catLeft}>
                     <div style={{ ...styles.colorDot, backgroundColor: cfg.color }} />
                     <span style={styles.catName}>{cfg.label}</span>
                   </div>
 
-                  {/* Category amount and percentage */}
                   <div style={styles.catRight}>
-                    <span style={styles.catAmount}>{formatINR(item.total)}</span>
-                    <span style={styles.catPercent}>{Math.round(item.percentage)}%</span>
+                    <span style={styles.catAmount} className="tabular-nums">{formatINR(item.total)}</span>
+                    <span style={styles.catPercent} className="tabular-nums">{Math.round(item.percentage)}%</span>
                   </div>
                 </div>
               )
@@ -129,11 +126,12 @@ export default function MoneyGoesCard({ data, loading = false }) {
 
 const styles = {
   card: {
-    backgroundColor: '#ffffff',
-    borderRadius: '20px',
-    padding: '18px 16px',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '16px',
+    padding: '20px 18px',
     marginBottom: '14px',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)',
+    border: '1px solid #E5E9F0',
+    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
     boxSizing: 'border-box',
     width: '100%',
   },
@@ -144,30 +142,30 @@ const styles = {
     marginBottom: '16px',
   },
   title: {
-    fontSize: '17px',
+    fontSize: '15px',
     fontWeight: '700',
-    color: '#0f172a',
-    letterSpacing: '-0.3px',
+    color: '#202938',
+    letterSpacing: '-0.2px',
     marginBottom: '2px',
   },
   subtitle: {
-    fontSize: '12.5px',
-    color: '#64748b',
+    fontSize: '12px',
+    color: '#8792A2',
   },
   badge: {
-    backgroundColor: '#eef2ff',
-    color: '#6366f1',
-    fontSize: '12px',
+    backgroundColor: '#F7F8FA',
+    color: '#8792A2',
+    border: '1px solid #E5E9F0',
+    fontSize: '11px',
     fontWeight: '600',
-    padding: '5px 12px',
-    borderRadius: '9999px',
-    whiteSpace: 'nowrap',
+    padding: '3px 8px',
+    borderRadius: '6px',
   },
   contentRow: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: '12px',
+    gap: '16px',
   },
   chartCol: {
     flexShrink: 0,
@@ -177,8 +175,8 @@ const styles = {
   },
   chartContainer: {
     position: 'relative',
-    width: '120px',
-    height: '120px',
+    width: '116px',
+    height: '116px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -192,16 +190,16 @@ const styles = {
     pointerEvents: 'none',
   },
   centerSub: {
-    fontSize: '10px',
-    fontWeight: '600',
+    fontSize: '9px',
+    fontWeight: '700',
     letterSpacing: '0.06em',
-    color: '#94a3b8',
+    color: '#8792A2',
     marginBottom: '1px',
   },
   centerTotal: {
-    fontSize: '15.5px',
-    fontWeight: '800',
-    color: '#0f172a',
+    fontSize: '14px',
+    fontWeight: '700',
+    color: '#172B4D',
     letterSpacing: '-0.3px',
   },
   legendCol: {
@@ -220,33 +218,37 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
+    minWidth: 0,
   },
   colorDot: {
-    width: '9px',
-    height: '9px',
+    width: '8px',
+    height: '8px',
     borderRadius: '50%',
     flexShrink: 0,
   },
   catName: {
-    fontSize: '13px',
+    fontSize: '12.5px',
     fontWeight: '500',
-    color: '#1e293b',
+    color: '#202938',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   catRight: {
     display: 'flex',
     alignItems: 'center',
-    gap: '6px',
+    gap: '8px',
   },
   catAmount: {
-    fontSize: '13.5px',
-    fontWeight: '700',
-    color: '#0f172a',
+    fontSize: '13px',
+    fontWeight: '600',
+    color: '#202938',
   },
   catPercent: {
     fontSize: '11.5px',
     fontWeight: '500',
-    color: '#94a3b8',
-    minWidth: '26px',
+    color: '#8792A2',
+    minWidth: '28px',
     textAlign: 'right',
   },
 }

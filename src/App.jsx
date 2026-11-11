@@ -13,10 +13,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="app-container">
-        {/* Pixel-Accurate iPhone Dynamic Island Status Bar */}
+        {/* Status bar preserved for compatibility */}
         <IPhoneStatusBar />
 
-        {/* Scrollable Dashboard Viewport */}
+        {/* Scrollable Viewport */}
         <main className="page-scroll-area">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -29,7 +29,7 @@ export default function App() {
           </Routes>
         </main>
 
-        {/* Fixed Pixel-Accurate Bottom Navigation */}
+        {/* Modern Fintech Navigation Bar */}
         <BottomNav />
       </div>
     </BrowserRouter>

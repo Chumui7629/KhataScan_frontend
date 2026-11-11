@@ -45,30 +45,30 @@ export default function RecentReceipts({ receipts = [], loading = false }) {
 
   return (
     <div style={styles.card}>
-      {/* Header Row */}
+      {/* Header */}
       <div style={styles.headerRow}>
         <div>
-          <h3 style={styles.title}>Recent Receipts</h3>
-          <p style={styles.subtitle}>Tap to inspect full breakdown</p>
+          <h3 style={styles.title}>Recent Transactions</h3>
+          <p style={styles.subtitle}>Latest scanned receipts</p>
         </div>
         <button style={styles.seeAllBtn} onClick={() => navigate('/receipts')}>
-          See all
+          View all
         </button>
       </div>
 
       {/* Receipts List */}
       {loading ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', padding: '8px 0' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '8px 0' }}>
           {[1, 2, 3].map((i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div className="skeleton" style={{ width: '48px', height: '60px', borderRadius: '10px' }} />
+              <div className="skeleton" style={{ width: '40px', height: '40px', borderRadius: '10px' }} />
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <div className="skeleton" style={{ width: '60%', height: '14px' }} />
-                <div className="skeleton" style={{ width: '35%', height: '11px' }} />
+                <div className="skeleton" style={{ width: '50%', height: '14px' }} />
+                <div className="skeleton" style={{ width: '30%', height: '11px' }} />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-                <div className="skeleton" style={{ width: '55px', height: '14px' }} />
-                <div className="skeleton" style={{ width: '60px', height: '18px', borderRadius: '9999px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '5px' }}>
+                <div className="skeleton" style={{ width: '60px', height: '14px' }} />
+                <div className="skeleton" style={{ width: '50px', height: '16px', borderRadius: '4px' }} />
               </div>
             </div>
           ))}
@@ -96,11 +96,12 @@ export default function RecentReceipts({ receipts = [], loading = false }) {
 
 const styles = {
   card: {
-    backgroundColor: '#ffffff',
-    borderRadius: '20px',
-    padding: '18px 16px',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '16px',
+    padding: '20px 18px',
     marginBottom: '14px',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)',
+    border: '1px solid #E5E9F0',
+    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
     boxSizing: 'border-box',
     width: '100%',
   },
@@ -108,27 +109,27 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: '6px',
+    marginBottom: '8px',
   },
   title: {
-    fontSize: '17px',
+    fontSize: '15px',
     fontWeight: '700',
-    color: '#0f172a',
-    letterSpacing: '-0.3px',
+    color: '#202938',
+    letterSpacing: '-0.2px',
     marginBottom: '2px',
   },
   subtitle: {
-    fontSize: '12.5px',
-    color: '#64748b',
+    fontSize: '12px',
+    color: '#8792A2',
   },
   seeAllBtn: {
     background: 'none',
     border: 'none',
-    color: '#6366f1',
-    fontSize: '14px',
+    color: '#3978B8',
+    fontSize: '13px',
     fontWeight: '600',
     cursor: 'pointer',
-    padding: '2px 0',
+    padding: '4px 0',
   },
   list: {
     display: 'flex',

@@ -1,11 +1,36 @@
 :root {
-  --primary: #6366f1;
-  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-  --bg-app: #f8fafc;
-  --text-dark: #0f172a;
-  --text-muted: #64748b;
-  --text-light: #94a3b8;
-  --border-light: #f1f5f9;
+  /* Brand Fintech Palette */
+  --primary: #172B4D;             /* Deep Navy */
+  --primary-hover: #0F1C33;
+  --secondary: #3978B8;           /* Muted Blue */
+  --secondary-hover: #2F659C;
+  --secondary-light: #EBF2F9;
+  
+  --bg-app: #F7F8FA;              /* Off White */
+  --surface: #FFFFFF;             /* Pure White */
+  --surface-alt: #FAFBFC;
+  
+  --text-dark: #202938;           /* Dark Charcoal */
+  --text-muted: #8792A2;          /* Muted Grey */
+  --text-subtle: #A0AEC0;
+  
+  --border-color: #E5E9F0;        /* Light Grey */
+  --border-subtle: #EEF2F6;
+  
+  /* Status Semantics */
+  --success: #1B8754;             /* Soft Green */
+  --success-bg: #E8F5E9;
+  --warning: #B45309;             /* Soft Amber */
+  --warning-bg: #FEF3C7;
+  --error: #D32F2F;               /* Muted Red */
+  --error-bg: #FEE2E2;
+
+  /* Typography & Layout */
+  --font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
 }
 
 * {
@@ -20,84 +45,75 @@ body {
   height: 100%;
   width: 100%;
   background-color: var(--bg-app);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-family);
   color: var(--text-dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: stretch;
+  background-color: var(--bg-app);
 }
 
-/* App Phone Frame Container */
+/* Responsive Fintech App Container */
 .app-container {
   position: relative;
   width: 100%;
-  max-width: 430px;
-  height: 100%;
+  max-width: 640px;
+  min-height: 100vh;
   background-color: var(--bg-app);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   margin: 0 auto;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
 }
 
-/* On large desktop monitors, frame as an iPhone mockup */
-@media (min-width: 500px) {
-  body {
-    background-color: #0f172a;
-  }
-
-  #root {
-    align-items: center;
-    padding: 24px 0;
-  }
-
+@media (max-width: 640px) {
   .app-container {
-    height: 94vh;
-    max-height: 932px;
-    border-radius: 52px;
-    border: 11px solid #1e293b;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 2px #334155;
+    border-left: none;
+    border-right: none;
   }
 }
 
-/* On actual mobile screens / viewports */
-@media (max-width: 499px) {
-  body {
-    background-color: var(--bg-app);
-  }
-
-  .app-container {
-    height: 100%;
-    max-height: 100vh;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-  }
-}
-
-/* Scrollable Main Area */
+/* Scrollable Main Viewport */
 .page-scroll-area {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 96px;
+  padding-bottom: 84px;
 }
 
 .page-scroll-area::-webkit-scrollbar {
-  display: none;
+  width: 5px;
 }
 
-.page-scroll-area {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.page-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.page-scroll-area::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+/* Inner Page Spacing */
+.page-inner {
+  padding: 20px 20px 28px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .page-inner {
+    padding: 16px 16px 24px;
+  }
 }
 
 /* Standard Skeleton Loading */
@@ -105,79 +121,94 @@ body {
   0% {
     background-position: -200% 0;
   }
-
   100% {
     background-position: 200% 0;
   }
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background: linear-gradient(90deg, #F1F4F8 25%, #E5E9F0 50%, #F1F4F8 75%);
   background-size: 200% 100%;
   animation: shimmerAnim 1.6s infinite ease-in-out;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
 }
 
-.receipt-scan-beam {
-  position: absolute;
-  z-index: 1;
-  top: 22px;
-  left: 0;
-  right: 0;
-  height: 16px;
-  background: linear-gradient(180deg, rgba(99, 102, 241, 0.02), rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.02));
-  pointer-events: none;
-  animation: receiptScan 2.6s ease-in-out infinite alternate;
-}
-
-.receipt-scan-line {
-  height: 1px;
-  background: #818cf8;
-  box-shadow: 0 0 6px rgba(129, 140, 248, 0.75);
-}
-
-@keyframes receiptScan {
-  from {
-    transform: translateY(0);
-    opacity: 0.45;
-  }
-
-  to {
-    transform: translateY(54px);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .receipt-scan-beam {
-    animation: none;
-  }
-}
-
-/* Common Button Styles */
+/* Fintech Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 12px 20px;
-  border-radius: 14px;
-  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-size: 13.5px;
   font-weight: 600;
-  border: none;
+  font-family: inherit;
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.1s;
+  transition: all 0.15s ease-in-out;
 }
 
 .btn:active {
-  opacity: 0.85;
   transform: scale(0.98);
 }
 
 .btn-primary {
   background-color: var(--primary);
-  background-image: var(--primary-gradient);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+  border-color: var(--primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: #ffffff;
+  border-color: var(--secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-hover);
+  border-color: var(--secondary-hover);
+}
+
+.btn-outline {
+  background-color: var(--surface);
+  color: var(--text-dark);
+  border-color: var(--border-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--surface-alt);
+  border-color: #cbd5e1;
+}
+
+/* Input Fields */
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--surface);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(57, 120, 184, 0.15);
+}
+
+/* Tabular Financial Numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Spinner Animation */
@@ -185,24 +216,16 @@ body {
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
 }
 
 .spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid #e2e8f0;
-  border-top-color: var(--primary);
+  width: 26px;
+  height: 26px;
+  border: 2.5px solid var(--border-color);
+  border-top-color: var(--secondary);
   border-radius: 50%;
   animation: spinAnim 0.7s linear infinite;
-}
-
-/* Hide duplicate simulated status bar in standalone iOS app */
-@media all and (display-mode: standalone) {
-  .iphone-status-bar {
-    display: none !important;
-  }
 }

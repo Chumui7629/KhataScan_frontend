@@ -1,28 +1,15 @@
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-// Figma design tokens from https://www.figma.com/community/file/1209593649566951455/bottom-navigation-bar
-const ACTIVE_COLOR = '#0f172a'
-const INACTIVE_COLOR = '#6b7f96'
+const ACTIVE_COLOR = '#172B4D'      // Primary Deep Navy
+const INACTIVE_COLOR = '#8792A2'    // Muted Grey
 
 function HomeIcon({ active }) {
   const color = active ? ACTIVE_COLOR : INACTIVE_COLOR
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M3 10.5L12 3l9 7.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9.5z"
-        stroke={color}
-        strokeWidth="1.85"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9 22v-6a3 3 0 0 1 6 0v6"
-        stroke={color}
-        strokeWidth="1.85"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 10.5L12 3l9 7.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9.5z" />
+      <path d="M9 22v-6a3 3 0 0 1 6 0v6" />
     </svg>
   )
 }
@@ -30,34 +17,46 @@ function HomeIcon({ active }) {
 function ReceiptsIcon({ active }) {
   const color = active ? ACTIVE_COLOR : INACTIVE_COLOR
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M6 3.5h12v17l-2.2-1.5-1.8 1.5-2-1.5-2 1.5-1.8-1.5L6 20.5v-17z"
-        stroke={color}
-        strokeWidth="1.85"
-        strokeLinejoin="round"
-      />
-      <path d="M9 8h6M9 12h6M9 16h3" stroke={color} strokeWidth="1.7" strokeLinecap="round" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 3.5h12v17l-2.2-1.5-1.8 1.5-2-1.5-2 1.5-1.8-1.5L6 20.5v-17z" />
+      <path d="M9 8h6" />
+      <path d="M9 12h6" />
+      <path d="M9 16h4" />
     </svg>
   )
 }
 
-function CameraIcon({ active }) {
-  const color = active ? ACTIVE_COLOR : INACTIVE_COLOR
+function ScanIcon({ active }) {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M4 7.5h3l1.5-2h7l1.5 2h3A1.5 1.5 0 0 1 21.5 9v9a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9A1.5 1.5 0 0 1 4 7.5z" stroke={color} strokeWidth="1.85" strokeLinejoin="round" />
-      <circle cx="12" cy="13" r="3.2" stroke={color} strokeWidth="1.85" />
-    </svg>
+    <div
+      style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: '12px',
+        backgroundColor: active ? '#172B4D' : '#3978B8',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 2px 8px rgba(57, 120, 184, 0.25)',
+        transition: 'all 0.15s ease',
+      }}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+        <circle cx="12" cy="13" r="4" />
+      </svg>
+    </div>
   )
 }
 
 function AnalyticsIcon({ active }) {
   const color = active ? ACTIVE_COLOR : INACTIVE_COLOR
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M4 20V4M4 20h17" stroke={color} strokeWidth="1.85" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M7.5 16v-4M12 16V8M16.5 16v-6" stroke={color} strokeWidth="2.2" strokeLinecap="round" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="14" />
+      <line x1="3" y1="20" x2="21" y2="20" />
     </svg>
   )
 }
@@ -65,14 +64,9 @@ function AnalyticsIcon({ active }) {
 function ProfileIcon({ active }) {
   const color = active ? ACTIVE_COLOR : INACTIVE_COLOR
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="8.2" r="4.2" stroke={color} strokeWidth="1.85" />
-      <path
-        d="M4.5 20.2a7.5 7.5 0 0 1 15 0"
-        stroke={color}
-        strokeWidth="1.85"
-        strokeLinecap="round"
-      />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M5 20c0-3.5 3.5-5.5 7-5.5s7 2 7 5.5" />
     </svg>
   )
 }
@@ -90,22 +84,23 @@ export default function BottomNav() {
       Icon: HomeIcon,
     },
     {
-      id: 'feed',
+      id: 'receipts',
       label: 'Receipts',
       path: '/receipts',
       isActive: pathname.startsWith('/receipts'),
       Icon: ReceiptsIcon,
     },
     {
-      id: 'explore',
-      label: '',
+      id: 'scan',
+      label: 'Scan',
       ariaLabel: 'Scan receipt',
       path: '/scan',
       isActive: pathname === '/scan',
-      Icon: CameraIcon,
+      Icon: ScanIcon,
+      isSpecial: true,
     },
     {
-      id: 'highlights',
+      id: 'analytics',
       label: 'Analytics',
       path: '/analytics',
       isActive: pathname === '/analytics',
@@ -121,14 +116,17 @@ export default function BottomNav() {
   ]
 
   return (
-    <div style={styles.navContainer}>
-      <nav style={styles.navBar}>
+    <nav style={styles.navContainer} aria-label="Main Navigation">
+      <div style={styles.navBar}>
         {tabs.map((tab) => {
-          const { Icon, isActive, label, ariaLabel, path, id } = tab
+          const { Icon, isActive, label, ariaLabel, path, id, isSpecial } = tab
           return (
             <button
               key={id}
-              style={styles.navButton}
+              style={{
+                ...styles.navButton,
+                marginTop: isSpecial ? '-8px' : '0',
+              }}
               onClick={() => navigate(path)}
               aria-label={ariaLabel || label}
             >
@@ -136,12 +134,11 @@ export default function BottomNav() {
                 <Icon active={isActive} />
               </div>
               <span
-                aria-hidden={label ? undefined : 'true'}
                 style={{
                   ...styles.navLabel,
                   color: isActive ? ACTIVE_COLOR : INACTIVE_COLOR,
-                  fontWeight: isActive ? '600' : '400',
-                  visibility: label ? 'visible' : 'hidden',
+                  fontWeight: isActive ? '600' : '500',
+                  marginTop: isSpecial ? '2px' : '3px',
                 }}
               >
                 {label}
@@ -149,32 +146,30 @@ export default function BottomNav() {
             </button>
           )
         })}
-      </nav>
-
-      {/* iPhone Home Indicator */}
-      <div style={styles.homeIndicatorWrapper}>
-        <div style={styles.homeIndicator} />
       </div>
-    </div>
+    </nav>
   )
 }
 
 const styles = {
   navContainer: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: 0,
-    left: 0,
-    right: 0,
+    left: '50%',
+    transform: 'translateX(-50%)',
     width: '100%',
-    backgroundColor: '#ffffff',
-    borderTop: '1px solid #eef2f6',
+    maxWidth: '640px',
+    backgroundColor: 'rgba(255, 255, 255, 0.98)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    borderTop: '1px solid #E5E9F0',
     zIndex: 100,
     paddingBottom: 'env(safe-area-inset-bottom, 0px)',
     boxSizing: 'border-box',
-    boxShadow: '0 -2px 10px rgba(15, 23, 42, 0.03)',
+    boxShadow: '0 -2px 12px rgba(23, 43, 77, 0.04)',
   },
   navBar: {
-    height: '60px',
+    height: '64px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -188,38 +183,23 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '4px',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    padding: '6px 0',
+    padding: '4px 0',
     minWidth: '0',
-    transition: 'opacity 0.15s ease, transform 0.1s ease',
+    transition: 'opacity 0.15s ease',
   },
   iconWrapper: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '26px',
-    height: '26px',
+    height: '24px',
   },
   navLabel: {
-    fontSize: '12px',
+    fontSize: '11px',
     letterSpacing: '-0.1px',
     lineHeight: '1.2',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-  },
-  homeIndicatorWrapper: {
-    height: '18px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  homeIndicator: {
-    width: '134px',
-    height: '4.5px',
-    backgroundColor: '#0f172a',
-    borderRadius: '100px',
-    opacity: 0.9,
+    fontFamily: 'inherit',
   },
 }

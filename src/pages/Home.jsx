@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ScanReceiptCard from '../components/ScanReceiptCard.jsx'
 import TotalExpensesCard from '../components/TotalExpensesCard.jsx'
 import MoneyGoesCard from '../components/MoneyGoesCard.jsx'
@@ -7,6 +8,7 @@ import { getMonthlySummary, getCategories } from '../api/analytics.js'
 import { listReceipts } from '../api/receipts.js'
 
 export default function Home() {
+  const navigate = useNavigate()
   const [summary, setSummary] = useState(null)
   const [categories, setCategories] = useState([])
   const [receipts, setReceipts] = useState([])
@@ -38,20 +40,34 @@ export default function Home() {
       })
   }, [])
 
-  // If backend summary total is 0, use the exact reference ₹12,450
+  // If backend summary total is 0, use the reference ₹12,450
   const totalSpent = summary?.total_spent && summary.total_spent > 0 ? summary.total_spent : 12450
 
   return (
     <div className="page-inner" style={styles.container}>
       {/* App Header */}
       <header style={styles.header}>
-        <div style={styles.headerTitles}>
-          <h1 style={styles.brandTitle}>Khatascan</h1>
-          <p style={styles.brandSubtitle}>Expense Tracker &amp; Digitizer</p>
+        <div style={styles.headerBrand}>
+          <div style={styles.brandIcon}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 3.5h12v17l-2.2-1.5-1.8 1.5-2-1.5-2 1.5-1.8-1.5L6 20.5v-17z" />
+              <path d="M9 8h6M9 12h6M9 16h4" />
+            </svg>
+          </div>
+          <div style={styles.headerTitles}>
+            <h1 style={styles.brandTitle}>Khatascan</h1>
+            <p style={styles.brandSubtitle}>Expense Tracker &amp; Digitizer</p>
+          </div>
         </div>
 
-        {/* Profile Avatar "PC" with Active Green Status */}
-        <div style={styles.avatarWrapper}>
+        {/* Profile Avatar "PC" */}
+        <div
+          style={styles.avatarWrapper}
+          onClick={() => navigate('/settings')}
+          role="button"
+          tabIndex={0}
+          title="Account Settings"
+        >
           <div style={styles.avatarCircle}>
             <span style={styles.avatarInitials}>PC</span>
           </div>
@@ -60,8 +76,8 @@ export default function Home() {
       </header>
 
       {/* Main Dashboard Cards */}
-      <ScanReceiptCard />
       <TotalExpensesCard total={totalSpent} loading={loading} />
+      <ScanReceiptCard />
       <MoneyGoesCard data={categories} loading={loading} />
       <RecentReceipts receipts={receipts} loading={loading} />
     </div>
@@ -70,7 +86,6 @@ export default function Home() {
 
 const styles = {
   container: {
-    padding: '12px 16px 0',
     width: '100%',
     boxSizing: 'border-box',
   },
@@ -79,54 +94,68 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: '16px',
-    paddingTop: '4px',
+    paddingTop: '2px',
+  },
+  headerBrand: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  brandIcon: {
+    width: '36px',
+    height: '36px',
+    borderRadius: '10px',
+    backgroundColor: '#172B4D',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
   },
   headerTitles: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '2px',
   },
   brandTitle: {
-    fontSize: '24px',
-    fontWeight: '800',
-    color: '#0f172a',
-    letterSpacing: '-0.5px',
+    fontSize: '20px',
+    fontWeight: '700',
+    color: '#172B4D',
+    letterSpacing: '-0.3px',
     lineHeight: '1.2',
   },
   brandSubtitle: {
-    fontSize: '13px',
-    color: '#94a3b8',
+    fontSize: '12px',
+    color: '#8792A2',
     fontWeight: '400',
   },
   avatarWrapper: {
     position: 'relative',
     display: 'inline-block',
+    cursor: 'pointer',
   },
   avatarCircle: {
-    width: '40px',
-    height: '40px',
+    width: '38px',
+    height: '38px',
     borderRadius: '50%',
-    backgroundColor: '#0f172a',
+    backgroundColor: '#EBF2F9',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    border: '2px solid #334155',
-    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+    border: '1.5px solid #E5E9F0',
   },
   avatarInitials: {
-    color: '#ffffff',
-    fontSize: '13.5px',
+    color: '#172B4D',
+    fontSize: '13px',
     fontWeight: '700',
-    letterSpacing: '0.04em',
+    letterSpacing: '0.02em',
   },
   activeDot: {
     position: 'absolute',
-    bottom: '-1px',
-    right: '-1px',
-    width: '11px',
-    height: '11px',
+    bottom: '0px',
+    right: '0px',
+    width: '10px',
+    height: '10px',
     borderRadius: '50%',
-    backgroundColor: '#22c55e',
-    border: '2px solid #ffffff',
+    backgroundColor: '#1B8754',
+    border: '2px solid #FFFFFF',
   },
 }
