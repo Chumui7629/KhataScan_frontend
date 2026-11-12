@@ -1,12 +1,12 @@
 import React from 'react'
 
 const CATEGORY_CONFIG = {
-  Groceries: { color: '#172B4D', label: 'Groceries' },
-  Restaurant: { color: '#3978B8', label: 'Restaurant' },
-  Utilities: { color: '#1B8754', label: 'Utilities' },
-  Transport: { color: '#D97706', label: 'Transport' },
-  Others: { color: '#8792A2', label: 'Others' },
-  Other: { color: '#8792A2', label: 'Others' },
+  Groceries: { color: '#00BFA5', label: 'Groceries' },
+  Restaurant: { color: '#0B6B5A', label: 'Restaurant' },
+  Utilities: { color: '#5FD3BC', label: 'Utilities' },
+  Transport: { color: '#2E8B7A', label: 'Transport' },
+  Others: { color: '#9BB5A8', label: 'Others' },
+  Other: { color: '#9BB5A8', label: 'Others' },
 }
 
 const DEFAULT_CATEGORIES = [
@@ -126,12 +126,12 @@ export default function MoneyGoesCard({ data, loading = false }) {
 
 const styles = {
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
-    padding: '20px 18px',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '22px 20px',
     marginBottom: '14px',
-    border: '1px solid #E5E9F0',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
     boxSizing: 'border-box',
     width: '100%',
   },
@@ -142,24 +142,25 @@ const styles = {
     marginBottom: '16px',
   },
   title: {
-    fontSize: '15px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '16px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.2px',
     marginBottom: '2px',
   },
   subtitle: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
   },
   badge: {
-    backgroundColor: '#F7F8FA',
-    color: '#8792A2',
-    border: '1px solid #E5E9F0',
+    backgroundColor: 'var(--bg-cream)',
+    color: 'var(--text-muted-cream)',
+    border: '1px solid var(--border-cream)',
     fontSize: '11px',
     fontWeight: '600',
-    padding: '3px 8px',
-    borderRadius: '6px',
+    padding: '3px 10px',
+    borderRadius: '9999px',
   },
   contentRow: {
     display: 'flex',
@@ -193,13 +194,14 @@ const styles = {
     fontSize: '9px',
     fontWeight: '700',
     letterSpacing: '0.06em',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginBottom: '1px',
   },
   centerTotal: {
-    fontSize: '14px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '15px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.3px',
   },
   legendCol: {
@@ -229,7 +231,7 @@ const styles = {
   catName: {
     fontSize: '12.5px',
     fontWeight: '500',
-    color: '#202938',
+    color: 'var(--text-on-cream)',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -242,12 +244,13 @@ const styles = {
   catAmount: {
     fontSize: '13px',
     fontWeight: '600',
-    color: '#202938',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
   },
   catPercent: {
     fontSize: '11.5px',
     fontWeight: '500',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     minWidth: '28px',
     textAlign: 'right',
   },

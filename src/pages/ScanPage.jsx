@@ -66,7 +66,6 @@ export default function ScanPage() {
 
       setVendorName(ocrRes.vendor_name || 'Super Mart')
       // receipt_date is the backend-parsed ISO "YYYY-MM-DD" string — correct format for <input type="date">
-      // ocrRes.date is raw OCR text (e.g. "12 Nov 2026") which the date input cannot parse
       setReceiptDate(ocrRes.receipt_date || new Date().toISOString().split('T')[0])
       setTotalAmount(ocrRes.total != null ? String(ocrRes.total) : '0')
       setCategory(ocrRes.category || 'Groceries')
@@ -115,14 +114,14 @@ export default function ScanPage() {
     return (
       <div className="page-inner" style={{ ...styles.container, textAlign: 'center', paddingTop: '40px' }}>
         <div style={styles.successIconCircle}>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1B8754" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-dark)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#172B4D', marginBottom: '6px' }}>
+        <h2 style={{ fontSize: '22px', fontWeight: '600', fontFamily: 'var(--font-serif)', color: 'var(--text-on-cream)', marginBottom: '8px' }}>
           Receipt Digitized &amp; Saved
         </h2>
-        <p style={{ color: '#8792A2', fontSize: '13.5px', marginBottom: '28px', maxWidth: '280px', margin: '0 auto 28px' }}>
+        <p style={{ color: 'var(--text-muted-cream)', fontSize: '13.5px', marginBottom: '28px', maxWidth: '280px', margin: '0 auto 28px' }}>
           Your transaction and item breakdown have been added to your expense records.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '280px', margin: '0 auto' }}>
@@ -130,7 +129,7 @@ export default function ScanPage() {
             Back to Dashboard
           </button>
           <button
-            className="btn btn-outline"
+            className="btn btn-secondary"
             onClick={() => {
               setStep('idle')
               setPreviewUrls([])
@@ -148,7 +147,7 @@ export default function ScanPage() {
       {/* Header */}
       <div style={styles.header}>
         <button style={styles.backButton} onClick={() => navigate(-1)} aria-label="Go back">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#172B4D" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-on-cream)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
           <span style={styles.backText}>Back</span>
@@ -159,7 +158,7 @@ export default function ScanPage() {
 
       {error && (
         <div style={styles.errorBox}>
-          <span style={{ fontSize: '13px', color: '#D32F2F', fontWeight: '500' }}>{error}</span>
+          <span style={{ fontSize: '13px', color: 'var(--danger)', fontWeight: '500' }}>{error}</span>
         </div>
       )}
 
@@ -176,7 +175,7 @@ export default function ScanPage() {
               onChange={handleFileSelect}
             />
             <div style={styles.uploadIconCircle}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3978B8" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                 <circle cx="12" cy="13" r="4" />
               </svg>
@@ -333,7 +332,7 @@ export default function ScanPage() {
             >
               {step === 'saving' ? (
                 <>
-                  <div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px', borderTopColor: '#FFFFFF' }} />
+                  <div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px', borderTopColor: '#04100C' }} />
                   <span>Saving Record...</span>
                 </>
               ) : (
@@ -351,13 +350,16 @@ const styles = {
   container: {
     width: '100%',
     boxSizing: 'border-box',
+    backgroundColor: 'var(--bg-cream)',
+    color: 'var(--text-on-cream)',
+    minHeight: '100%',
   },
   header: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '16px',
-    paddingTop: '2px',
+    marginBottom: '18px',
+    paddingTop: '4px',
   },
   backButton: {
     display: 'flex',
@@ -371,90 +373,97 @@ const styles = {
   backText: {
     fontSize: '13.5px',
     fontWeight: '600',
-    color: '#172B4D',
+    color: 'var(--text-on-cream)',
+    fontFamily: 'var(--font-sans)',
   },
   headerTitle: {
-    fontSize: '17px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '18px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
   },
   errorBox: {
-    backgroundColor: '#FEE2E2',
-    border: '1px solid #FECACA',
-    borderRadius: '10px',
+    backgroundColor: 'rgba(229, 115, 106, 0.15)',
+    border: '1px solid rgba(229, 115, 106, 0.3)',
+    borderRadius: '16px',
     padding: '10px 14px',
     marginBottom: '14px',
   },
   dropZone: {
-    backgroundColor: '#FFFFFF',
-    border: '1.5px dashed #3978B8',
-    borderRadius: '16px',
+    backgroundColor: 'var(--surface-cream)',
+    border: '2px dashed var(--accent)',
+    borderRadius: '24px',
     padding: '40px 20px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
     cursor: 'pointer',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    boxShadow: 'none',
     transition: 'border-color 0.15s ease',
   },
   uploadIconCircle: {
     width: '56px',
     height: '56px',
-    borderRadius: '16px',
-    backgroundColor: '#EBF2F9',
+    borderRadius: '20px',
+    backgroundColor: 'rgba(0, 191, 165, 0.15)',
+    border: '1px solid var(--border-cream)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: '14px',
   },
   dropTitle: {
-    fontSize: '16px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '17px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     marginBottom: '4px',
   },
   dropSub: {
     fontSize: '13px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginBottom: '14px',
   },
   formatBadge: {
     fontSize: '11px',
     fontWeight: '600',
-    color: '#3978B8',
-    backgroundColor: '#EBF2F9',
-    padding: '4px 10px',
-    borderRadius: '6px',
+    color: 'var(--accent-dark)',
+    backgroundColor: 'rgba(10, 31, 24, 0.08)',
+    border: '1px solid var(--border-cream)',
+    padding: '4px 12px',
+    borderRadius: '9999px',
   },
   loadingCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
     padding: '24px 20px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
-    border: '1px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
   },
   previewImage: {
     width: '100%',
     maxHeight: '200px',
     objectFit: 'contain',
-    borderRadius: '12px',
+    borderRadius: '16px',
     marginBottom: '14px',
-    backgroundColor: '#F7F8FA',
-    border: '1px solid #E5E9F0',
+    backgroundColor: 'var(--bg-cream)',
+    border: '1px solid var(--border-cream)',
   },
   loadingTitle: {
-    fontSize: '15px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '16px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     marginBottom: '4px',
   },
   loadingSub: {
     fontSize: '12.5px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     maxWidth: '260px',
     lineHeight: '1.4',
   },
@@ -462,28 +471,28 @@ const styles = {
     width: '100%',
     maxWidth: '280px',
     height: '6px',
-    backgroundColor: '#E5E9F0',
+    backgroundColor: 'var(--olive-track)',
     borderRadius: '9999px',
     overflow: 'hidden',
     marginTop: '14px',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#3978B8',
+    backgroundColor: 'var(--accent)',
     borderRadius: '9999px',
     transition: 'width 0.2s ease',
   },
   progressPct: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginTop: '6px',
     fontWeight: '600',
   },
   previewCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
     padding: '12px',
-    border: '1px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
     display: 'flex',
     justifyContent: 'center',
     overflowX: 'auto',
@@ -496,39 +505,40 @@ const styles = {
   },
   pageBadge: {
     position: 'absolute',
-    top: '4px',
-    left: '4px',
-    backgroundColor: 'rgba(57, 120, 184, 0.85)',
-    color: '#fff',
+    top: '6px',
+    left: '6px',
+    backgroundColor: 'var(--accent)',
+    color: '#04100C',
     fontSize: '10px',
     fontWeight: '700',
-    borderRadius: '4px',
-    padding: '1px 5px',
+    borderRadius: '9999px',
+    padding: '2px 8px',
   },
   reviewImage: {
     width: '100%',
     maxHeight: '180px',
     objectFit: 'contain',
-    borderRadius: '10px',
+    borderRadius: '14px',
   },
   formCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
-    padding: '20px 18px',
-    border: '1px solid #E5E9F0',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '22px 20px',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
   },
   formHeader: {
     marginBottom: '16px',
   },
   formTitle: {
-    fontSize: '15px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '16px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
   },
   formSubtitle: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginTop: '2px',
   },
   fieldGroup: {
@@ -543,7 +553,7 @@ const styles = {
     display: 'block',
     fontSize: '11.5px',
     fontWeight: '600',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginBottom: '5px',
   },
   itemsBlock: {
@@ -554,31 +564,33 @@ const styles = {
     marginBottom: '6px',
   },
   itemsList: {
-    backgroundColor: '#F7F8FA',
-    borderRadius: '10px',
-    padding: '6px 12px',
-    border: '1px solid #E5E9F0',
+    backgroundColor: 'var(--bg-cream)',
+    borderRadius: '16px',
+    padding: '6px 14px',
+    border: '1px solid var(--border-cream)',
   },
   itemRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '7px 0',
-    borderBottom: '1px solid #EEF2F6',
+    padding: '8px 0',
+    borderBottom: '1px solid var(--border-cream)',
     fontSize: '12.5px',
   },
   itemTitle: {
-    color: '#202938',
+    color: 'var(--text-on-cream)',
     fontWeight: '500',
   },
   itemPrice: {
-    color: '#172B4D',
+    color: 'var(--text-on-cream)',
     fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
   },
   successIconCircle: {
     width: '60px',
     height: '60px',
     borderRadius: '50%',
-    backgroundColor: '#E8F5E9',
+    backgroundColor: 'rgba(0, 191, 165, 0.15)',
+    border: '1px solid var(--border-cream)',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',

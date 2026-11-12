@@ -61,14 +61,14 @@ export default function RecentReceipts({ receipts = [], loading = false }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '8px 0' }}>
           {[1, 2, 3].map((i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div className="skeleton" style={{ width: '40px', height: '40px', borderRadius: '10px' }} />
+              <div className="skeleton" style={{ width: '40px', height: '40px', borderRadius: '12px' }} />
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <div className="skeleton" style={{ width: '50%', height: '14px' }} />
                 <div className="skeleton" style={{ width: '30%', height: '11px' }} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '5px' }}>
                 <div className="skeleton" style={{ width: '60px', height: '14px' }} />
-                <div className="skeleton" style={{ width: '50px', height: '16px', borderRadius: '4px' }} />
+                <div className="skeleton" style={{ width: '50px', height: '16px', borderRadius: '9999px' }} />
               </div>
             </div>
           ))}
@@ -96,12 +96,12 @@ export default function RecentReceipts({ receipts = [], loading = false }) {
 
 const styles = {
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
-    padding: '20px 18px',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '22px 20px',
     marginBottom: '14px',
-    border: '1px solid #E5E9F0',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
     boxSizing: 'border-box',
     width: '100%',
   },
@@ -109,27 +109,30 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: '8px',
+    marginBottom: '10px',
   },
   title: {
-    fontSize: '15px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '16px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.2px',
     marginBottom: '2px',
   },
   subtitle: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
   },
   seeAllBtn: {
-    background: 'none',
-    border: 'none',
-    color: '#3978B8',
-    fontSize: '13px',
+    backgroundColor: 'rgba(11, 107, 90, 0.12)',
+    border: '1px solid var(--border-cream)',
+    color: 'var(--accent-dark)',
+    borderRadius: '9999px',
+    padding: '5px 14px',
+    fontSize: '12px',
     fontWeight: '600',
     cursor: 'pointer',
-    padding: '4px 0',
+    transition: 'all 0.15s ease',
   },
   list: {
     display: 'flex',

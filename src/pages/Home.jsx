@@ -6,13 +6,18 @@ import MoneyGoesCard from '../components/MoneyGoesCard.jsx'
 import RecentReceipts from '../components/RecentReceipts.jsx'
 import { getMonthlySummary, getCategories } from '../api/analytics.js'
 import { listReceipts } from '../api/receipts.js'
+import { useAuth, getInitials } from '../context/AuthContext.jsx'
 
 export default function Home() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [summary, setSummary] = useState(null)
   const [categories, setCategories] = useState([])
   const [receipts, setReceipts] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const displayName = user?.name || user?.username || ''
+  const initials = getInitials(displayName)
 
   useEffect(() => {
     const today = new Date()
@@ -49,7 +54,7 @@ export default function Home() {
       <header style={styles.header}>
         <div style={styles.headerBrand}>
           <div style={styles.brandIcon}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-dark)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6 3.5h12v17l-2.2-1.5-1.8 1.5-2-1.5-2 1.5-1.8-1.5L6 20.5v-17z" />
               <path d="M9 8h6M9 12h6M9 16h4" />
             </svg>
@@ -69,7 +74,7 @@ export default function Home() {
           title="Account Settings"
         >
           <div style={styles.avatarCircle}>
-            <span style={styles.avatarInitials}>PC</span>
+            <span style={styles.avatarInitials}>{initials || 'U'}</span>
           </div>
         </div>
       </header>
@@ -87,24 +92,28 @@ const styles = {
   container: {
     width: '100%',
     boxSizing: 'border-box',
+    backgroundColor: 'var(--bg-cream)',
+    color: 'var(--text-on-cream)',
+    minHeight: '100%',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '16px',
-    paddingTop: '2px',
+    marginBottom: '18px',
+    paddingTop: '4px',
   },
   headerBrand: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
+    gap: '12px',
   },
   brandIcon: {
-    width: '36px',
-    height: '36px',
-    borderRadius: '10px',
-    backgroundColor: '#172B4D',
+    width: '38px',
+    height: '38px',
+    borderRadius: '12px',
+    backgroundColor: 'var(--surface-cream)',
+    border: '1px solid var(--border-cream)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -115,16 +124,18 @@ const styles = {
     flexDirection: 'column',
   },
   brandTitle: {
-    fontSize: '20px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '22px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.3px',
     lineHeight: '1.2',
   },
   brandSubtitle: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     fontWeight: '400',
+    marginTop: '1px',
   },
   avatarWrapper: {
     position: 'relative',
@@ -135,14 +146,15 @@ const styles = {
     width: '38px',
     height: '38px',
     borderRadius: '50%',
-    backgroundColor: '#EBF2F9',
+    backgroundColor: 'var(--surface-cream)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    border: '1.5px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
+    transition: 'border-color 0.15s ease',
   },
   avatarInitials: {
-    color: '#172B4D',
+    color: 'var(--accent-dark)',
     fontSize: '13px',
     fontWeight: '700',
     letterSpacing: '0.02em',

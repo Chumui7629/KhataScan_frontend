@@ -57,7 +57,7 @@ export default function ReceiptsPage() {
           <p style={styles.subtitle}>View and manage all scanned expenses</p>
         </div>
         <button style={styles.scanBtn} onClick={() => navigate('/scan')}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#04100C" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
@@ -67,7 +67,7 @@ export default function ReceiptsPage() {
 
       {/* Search Bar */}
       <div style={styles.searchContainer}>
-        <svg style={styles.searchIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8792A2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg style={styles.searchIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted-cream)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
@@ -94,9 +94,9 @@ export default function ReceiptsPage() {
               key={cat}
               style={{
                 ...styles.filterPill,
-                backgroundColor: isActive ? '#172B4D' : '#FFFFFF',
-                color: isActive ? '#FFFFFF' : '#8792A2',
-                borderColor: isActive ? '#172B4D' : '#E5E9F0',
+                backgroundColor: isActive ? 'var(--accent)' : 'transparent',
+                color: isActive ? '#04100C' : 'var(--text-muted-cream)',
+                borderColor: isActive ? 'var(--accent)' : 'var(--border-cream)',
               }}
               onClick={() => setSelectedCategory(cat)}
             >
@@ -109,7 +109,7 @@ export default function ReceiptsPage() {
       {/* Main Content Area */}
       {error ? (
         <div style={styles.errorBox}>
-          <p style={{ color: '#D32F2F', fontSize: '14px', marginBottom: '14px' }}>{error}</p>
+          <p style={{ color: 'var(--danger)', fontSize: '14px', marginBottom: '16px' }}>{error}</p>
           <button className="btn btn-primary" onClick={() => fetchReceipts(page)}>
             Retry Connection
           </button>
@@ -118,14 +118,14 @@ export default function ReceiptsPage() {
         <div style={styles.listCard}>
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} style={styles.skeletonRow}>
-              <div className="skeleton" style={{ width: '40px', height: '40px', borderRadius: '10px' }} />
+              <div className="skeleton" style={{ width: '40px', height: '40px', borderRadius: '12px' }} />
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '7px' }}>
                 <div className="skeleton" style={{ width: '55%', height: '14px' }} />
                 <div className="skeleton" style={{ width: '35%', height: '11px' }} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
                 <div className="skeleton" style={{ width: '60px', height: '14px' }} />
-                <div className="skeleton" style={{ width: '50px', height: '16px', borderRadius: '4px' }} />
+                <div className="skeleton" style={{ width: '50px', height: '16px', borderRadius: '9999px' }} />
               </div>
             </div>
           ))}
@@ -133,7 +133,7 @@ export default function ReceiptsPage() {
       ) : receipts.length === 0 ? (
         <div style={styles.emptyState}>
           <div style={styles.emptyIconCircle}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3978B8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-dark)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6 3.5h12v17l-2.2-1.5-1.8 1.5-2-1.5-2 1.5-1.8-1.5L6 20.5v-17z" />
               <path d="M9 8h6M9 12h6M9 16h4" />
             </svg>
@@ -148,7 +148,7 @@ export default function ReceiptsPage() {
         </div>
       ) : filteredReceipts.length === 0 ? (
         <div style={styles.emptyFilterState}>
-          <p style={{ color: '#8792A2', fontSize: '13.5px' }}>
+          <p style={{ color: 'var(--text-muted-cream)', fontSize: '13.5px' }}>
             No receipts matching "{searchQuery}" in {selectedCategory}.
           </p>
           <button
@@ -177,7 +177,7 @@ export default function ReceiptsPage() {
               <button
                 style={{
                   ...styles.pageBtn,
-                  opacity: page <= 1 ? 0.4 : 1,
+                  opacity: page <= 1 ? 0.35 : 1,
                   cursor: page <= 1 ? 'not-allowed' : 'pointer',
                 }}
                 disabled={page <= 1}
@@ -191,7 +191,7 @@ export default function ReceiptsPage() {
               <button
                 style={{
                   ...styles.pageBtn,
-                  opacity: page >= totalPages ? 0.4 : 1,
+                  opacity: page >= totalPages ? 0.35 : 1,
                   cursor: page >= totalPages ? 'not-allowed' : 'pointer',
                 }}
                 disabled={page >= totalPages}
@@ -211,34 +211,38 @@ const styles = {
   container: {
     width: '100%',
     boxSizing: 'border-box',
+    backgroundColor: 'var(--bg-cream)',
+    color: 'var(--text-on-cream)',
+    minHeight: '100%',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '16px',
-    paddingTop: '2px',
+    marginBottom: '18px',
+    paddingTop: '4px',
   },
   title: {
-    fontSize: '20px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '22px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.3px',
   },
   subtitle: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginTop: '2px',
   },
   scanBtn: {
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
-    backgroundColor: '#172B4D',
-    color: '#FFFFFF',
+    backgroundColor: 'var(--accent)',
+    color: '#04100C',
     border: 'none',
-    borderRadius: '10px',
-    padding: '9px 15px',
+    borderRadius: '9999px',
+    padding: '9px 18px',
     fontSize: '13px',
     fontWeight: '600',
     cursor: 'pointer',
@@ -248,32 +252,32 @@ const styles = {
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    marginBottom: '12px',
+    marginBottom: '14px',
   },
   searchIcon: {
     position: 'absolute',
-    left: '12px',
+    left: '14px',
     pointerEvents: 'none',
   },
   searchInput: {
     width: '100%',
-    padding: '9px 36px 9px 34px',
-    borderRadius: '10px',
-    border: '1px solid #E5E9F0',
-    backgroundColor: '#FFFFFF',
+    padding: '10px 38px 10px 38px',
+    borderRadius: '9999px',
+    border: '1px solid var(--border-cream)',
+    backgroundColor: 'var(--surface-cream)',
     fontSize: '13.5px',
-    color: '#202938',
+    color: 'var(--text-on-cream)',
     outline: 'none',
     boxSizing: 'border-box',
-    fontFamily: 'inherit',
+    fontFamily: 'var(--font-sans)',
   },
   clearBtn: {
     position: 'absolute',
-    right: '10px',
+    right: '12px',
     background: 'none',
     border: 'none',
     fontSize: '18px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     cursor: 'pointer',
     padding: '0 4px',
   },
@@ -281,14 +285,14 @@ const styles = {
     display: 'flex',
     gap: '8px',
     overflowX: 'auto',
-    paddingBottom: '12px',
+    paddingBottom: '14px',
     scrollbarWidth: 'none',
     msOverflowStyle: 'none',
   },
   filterPill: {
     border: '1px solid',
-    borderRadius: '8px',
-    padding: '5px 12px',
+    borderRadius: '9999px',
+    padding: '6px 14px',
     fontSize: '12px',
     fontWeight: '600',
     cursor: 'pointer',
@@ -296,70 +300,72 @@ const styles = {
     transition: 'all 0.15s ease',
   },
   listCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
-    padding: '8px 16px',
-    border: '1px solid #E5E9F0',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '10px 18px',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
   },
   skeletonRow: {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
     padding: '12px 0',
-    borderBottom: '1px solid #EEF2F6',
+    borderBottom: '1px solid var(--border-cream)',
   },
   errorBox: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
     padding: '32px 20px',
     textAlign: 'center',
-    border: '1px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
   },
   emptyState: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
     padding: '44px 24px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
-    border: '1px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
   },
   emptyIconCircle: {
     width: '56px',
     height: '56px',
     borderRadius: '50%',
-    backgroundColor: '#EBF2F9',
+    backgroundColor: 'rgba(0, 191, 165, 0.15)',
+    border: '1px solid var(--border-cream)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: '14px',
   },
   emptyTitle: {
-    fontSize: '16px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '18px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     marginBottom: '6px',
   },
   emptySub: {
     fontSize: '13px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     maxWidth: '280px',
     lineHeight: '1.45',
   },
   emptyFilterState: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
     padding: '36px 20px',
     textAlign: 'center',
-    border: '1px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
   },
   resetFilterBtn: {
     marginTop: '10px',
     background: 'none',
     border: 'none',
-    color: '#3978B8',
+    color: 'var(--accent-dark)',
     fontSize: '13px',
     fontWeight: '600',
     cursor: 'pointer',
@@ -371,18 +377,18 @@ const styles = {
     padding: '14px 4px 6px',
   },
   pageBtn: {
-    backgroundColor: '#F7F8FA',
-    color: '#202938',
-    border: '1px solid #E5E9F0',
-    borderRadius: '8px',
-    padding: '6px 14px',
+    backgroundColor: 'rgba(10, 31, 24, 0.08)',
+    color: 'var(--text-on-cream)',
+    border: '1px solid var(--border-cream)',
+    borderRadius: '9999px',
+    padding: '6px 16px',
     fontSize: '12.5px',
     fontWeight: '600',
     cursor: 'pointer',
   },
   pageIndicator: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     fontWeight: '500',
   },
 }

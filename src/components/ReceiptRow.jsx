@@ -3,10 +3,10 @@ import { apiBase } from '../api/client.js'
 
 const CATEGORY_THEMES = {
   Groceries: {
-    bg: '#EBF2F9',
-    color: '#3978B8',
+    bg: 'rgba(0, 191, 165, 0.18)',
+    color: '#0B6B5A',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3978B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B6B5A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="9" cy="21" r="1" />
         <circle cx="20" cy="21" r="1" />
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
@@ -14,10 +14,10 @@ const CATEGORY_THEMES = {
     ),
   },
   Restaurant: {
-    bg: '#FEF3C7',
-    color: '#B45309',
+    bg: 'rgba(11, 107, 90, 0.18)',
+    color: '#0B6B5A',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B45309" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B6B5A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
         <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
         <line x1="6" y1="1" x2="6" y2="4" />
@@ -27,19 +27,19 @@ const CATEGORY_THEMES = {
     ),
   },
   Utilities: {
-    bg: '#E8F5E9',
-    color: '#1B8754',
+    bg: 'rgba(95, 211, 188, 0.25)',
+    color: '#0B6B5A',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B8754" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B6B5A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
       </svg>
     ),
   },
   Transport: {
-    bg: '#F3E8FF',
-    color: '#7E22CE',
+    bg: 'rgba(46, 139, 122, 0.2)',
+    color: '#0B6B5A',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7E22CE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B6B5A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="1" y="3" width="15" height="13" />
         <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
         <circle cx="5.5" cy="18.5" r="2.5" />
@@ -48,10 +48,10 @@ const CATEGORY_THEMES = {
     ),
   },
   Others: {
-    bg: '#F1F4F8',
-    color: '#8792A2',
+    bg: 'rgba(155, 181, 168, 0.25)',
+    color: '#4A6055',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8792A2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A6055" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
         <polyline points="14 2 14 8 20 8" />
         <line x1="16" y1="13" x2="8" y2="13" />
@@ -138,7 +138,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     padding: '12px 4px',
-    borderBottom: '1px solid #EEF2F6',
+    borderBottom: '1px solid var(--border-cream)',
     cursor: 'pointer',
     userSelect: 'none',
     transition: 'background-color 0.15s ease',
@@ -150,17 +150,18 @@ const styles = {
   thumbnailImg: {
     width: '40px',
     height: '40px',
-    borderRadius: '10px',
+    borderRadius: '12px',
     objectFit: 'cover',
-    border: '1px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
   },
   iconBox: {
     width: '40px',
     height: '40px',
-    borderRadius: '10px',
+    borderRadius: '12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    border: '1px solid var(--border-cream)',
   },
   middleCol: {
     flex: 1,
@@ -172,7 +173,7 @@ const styles = {
   vendorName: {
     fontSize: '14px',
     fontWeight: '600',
-    color: '#202938',
+    color: 'var(--text-on-cream)',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -181,7 +182,7 @@ const styles = {
   dateText: {
     fontSize: '12px',
     fontWeight: '400',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
   },
   rightCol: {
     display: 'flex',
@@ -194,14 +195,15 @@ const styles = {
   amountText: {
     fontSize: '14.5px',
     fontWeight: '600',
-    color: '#172B4D',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.2px',
   },
   categoryPill: {
     fontSize: '10.5px',
     fontWeight: '600',
-    padding: '1.5px 7px',
-    borderRadius: '4px',
+    padding: '2px 8px',
+    borderRadius: '9999px',
     display: 'inline-block',
   },
 }

@@ -241,25 +241,6 @@ export default function BottomNav() {
           )
         })}
       </div>
-
-      {/* iOS Home Indicator */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingBottom: '8px',
-        }}
-      >
-        <div
-          style={{
-            width: '134px',
-            height: '4px',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            borderRadius: '2px',
-          }}
-        />
-      </div>
     </nav>
   )
 }

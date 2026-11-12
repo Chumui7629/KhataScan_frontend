@@ -1,7 +1,19 @@
 import React from 'react'
+import { useAuth, getInitials } from '../context/AuthContext.jsx'
+import { useNavigate } from 'react-router-dom'
 
 export default function SettingsPage() {
   const backendUrl = import.meta.env.VITE_API_URL || 'https://khatascan-backend-prod.onrender.com'
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const displayName = user?.name || user?.username || 'User'
+  const initials = getInitials(displayName)
+
+  function handleLogout() {
+    logout()
+    navigate('/signin', { replace: true })
+  }
 
   return (
     <div className="page-inner" style={styles.container}>
@@ -17,12 +29,12 @@ export default function SettingsPage() {
           <div style={styles.profileRow}>
             <div style={styles.avatarWrapper}>
               <div style={styles.avatarCircle}>
-                <span style={styles.avatarInitials}>PC</span>
+                <span style={styles.avatarInitials}>{initials}</span>
               </div>
             </div>
             <div style={styles.profileText}>
               <div style={styles.nameRow}>
-                <h3 style={styles.profileName}>Praveen C.</h3>
+                <h3 style={styles.profileName}>{displayName}</h3>
                 <span style={styles.verifiedBadge}>Verified</span>
               </div>
               <p style={styles.profileRole}>Personal Expense Account</p>
@@ -36,7 +48,7 @@ export default function SettingsPage() {
           
           <div style={styles.infoRow}>
             <div style={styles.iconKey}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8792A2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted-cream)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="1" x2="12" y2="23" />
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
               </svg>
@@ -47,7 +59,7 @@ export default function SettingsPage() {
 
           <div style={styles.infoRow}>
             <div style={styles.iconKey}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8792A2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted-cream)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                 <line x1="16" y1="2" x2="16" y2="6" />
                 <line x1="8" y1="2" x2="8" y2="6" />
@@ -60,14 +72,14 @@ export default function SettingsPage() {
 
           <div style={styles.infoRow}>
             <div style={styles.iconKey}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8792A2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted-cream)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
               <span style={styles.infoKey}>Data Export</span>
             </div>
-            <span style={{ ...styles.infoValue, color: '#3978B8', cursor: 'pointer' }}>
+            <span style={styles.exportLink}>
               CSV / Excel
             </span>
           </div>
@@ -103,12 +115,16 @@ export default function SettingsPage() {
             <span style={styles.infoKey}>Server Health</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <div style={styles.statusDot} />
-              <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#1B8754' }}>
+              <span style={{ fontSize: '12.5px', fontWeight: '600', color: 'var(--accent-dark)' }}>
                 Operational
               </span>
             </div>
           </div>
         </div>
+        {/* Log out */}
+        <button style={styles.logoutBtn} onClick={handleLogout}>
+          Log out
+        </button>
       </div>
     </div>
   )
@@ -118,28 +134,32 @@ const styles = {
   container: {
     width: '100%',
     boxSizing: 'border-box',
+    backgroundColor: 'var(--bg-cream)',
+    color: 'var(--text-on-cream)',
+    minHeight: '100%',
   },
   header: {
-    marginBottom: '16px',
-    paddingTop: '2px',
+    marginBottom: '18px',
+    paddingTop: '4px',
   },
   title: {
-    fontSize: '20px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '22px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.3px',
   },
   subtitle: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginTop: '2px',
   },
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
-    padding: '20px 18px',
-    border: '1px solid #E5E9F0',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '22px 20px',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
   },
   profileRow: {
     display: 'flex',
@@ -154,14 +174,14 @@ const styles = {
     width: '48px',
     height: '48px',
     borderRadius: '50%',
-    backgroundColor: '#EBF2F9',
+    backgroundColor: 'var(--surface-cream)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    border: '1.5px solid #E5E9F0',
+    border: '1.5px solid var(--border-cream)',
   },
   avatarInitials: {
-    color: '#172B4D',
+    color: 'var(--accent-dark)',
     fontSize: '16px',
     fontWeight: '700',
     letterSpacing: '0.02em',
@@ -177,35 +197,38 @@ const styles = {
   },
   profileName: {
     fontSize: '16px',
-    fontWeight: '700',
-    color: '#202938',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
   },
   verifiedBadge: {
     fontSize: '10px',
     fontWeight: '700',
-    color: '#1B8754',
-    backgroundColor: '#E8F5E9',
-    padding: '2px 6px',
-    borderRadius: '4px',
+    color: '#04100C',
+    backgroundColor: 'var(--accent)',
+    padding: '2px 8px',
+    borderRadius: '9999px',
     textTransform: 'uppercase',
+    letterSpacing: '0.04em',
   },
   profileRole: {
     fontSize: '12.5px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginTop: '2px',
   },
   sectionHeading: {
-    fontSize: '14px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '15px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     marginBottom: '8px',
   },
   infoRow: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '11px 0',
-    borderBottom: '1px solid #EEF2F6',
+    padding: '12px 0',
+    borderBottom: '1px solid var(--border-cream)',
     fontSize: '13px',
   },
   iconKey: {
@@ -214,17 +237,23 @@ const styles = {
     gap: '8px',
   },
   infoKey: {
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     fontWeight: '500',
   },
   infoValue: {
+    fontWeight: '500',
+    color: 'var(--text-on-cream)',
+    textAlign: 'right',
+  },
+  exportLink: {
     fontWeight: '600',
-    color: '#202938',
+    color: 'var(--accent-dark)',
+    cursor: 'pointer',
     textAlign: 'right',
   },
   apiValue: {
     fontWeight: '500',
-    color: '#3978B8',
+    color: 'var(--accent-dark)',
     maxWidth: '55%',
     textAlign: 'right',
     whiteSpace: 'nowrap',
@@ -237,6 +266,20 @@ const styles = {
     width: '7px',
     height: '7px',
     borderRadius: '50%',
-    backgroundColor: '#1B8754',
+    backgroundColor: 'var(--accent)',
+    boxShadow: '0 0 6px rgba(0, 191, 165, 0.4)',
+  },
+  logoutBtn: {
+    width: '100%',
+    padding: '13px',
+    borderRadius: '9999px',
+    border: '1.5px solid var(--danger)',
+    backgroundColor: 'transparent',
+    color: 'var(--danger)',
+    fontSize: '14px',
+    fontWeight: '600',
+    fontFamily: 'Inter, sans-serif',
+    cursor: 'pointer',
+    marginTop: '4px',
   },
 }

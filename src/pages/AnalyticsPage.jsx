@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { getMonthlySummary, getCategories } from '../api/analytics.js'
 
 const CATEGORY_COLORS = {
-  Groceries: '#172B4D',
-  Restaurant: '#3978B8',
-  Utilities: '#1B8754',
-  Transport: '#D97706',
-  Others: '#8792A2',
-  Other: '#8792A2',
+  Groceries: '#00BFA5',
+  Restaurant: '#0B6B5A',
+  Utilities: '#5FD3BC',
+  Transport: '#2E8B7A',
+  Others: '#9BB5A8',
+  Other: '#9BB5A8',
 }
 
 const FALLBACK_CATEGORIES = [
@@ -110,7 +110,7 @@ export default function AnalyticsPage() {
           {/* Quick Insights Banner */}
           <div style={styles.insightCard}>
             <div style={styles.insightIconCircle}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3978B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-dark)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="16" x2="12" y2="12" />
                 <line x1="12" y1="8" x2="12.01" y2="8" />
@@ -176,32 +176,37 @@ const styles = {
   container: {
     width: '100%',
     boxSizing: 'border-box',
+    backgroundColor: 'var(--bg-cream)',
+    color: 'var(--text-on-cream)',
+    minHeight: '100%',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '16px',
-    paddingTop: '2px',
+    marginBottom: '18px',
+    paddingTop: '4px',
   },
   title: {
-    fontSize: '20px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '22px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.3px',
   },
   subtitle: {
     fontSize: '12px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginTop: '2px',
   },
   monthBadge: {
-    backgroundColor: '#EBF2F9',
-    color: '#3978B8',
+    backgroundColor: 'rgba(11, 107, 90, 0.12)',
+    color: 'var(--accent-dark)',
+    border: '1px solid var(--border-cream)',
     fontSize: '11.5px',
     fontWeight: '600',
-    padding: '4px 10px',
-    borderRadius: '6px',
+    padding: '4px 12px',
+    borderRadius: '9999px',
   },
   statsGrid: {
     display: 'grid',
@@ -209,11 +214,11 @@ const styles = {
     gap: '10px',
   },
   statCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '14px',
-    padding: '14px 12px',
-    border: '1px solid #E5E9F0',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '16px 14px',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
@@ -221,35 +226,37 @@ const styles = {
   statLabel: {
     fontSize: '9.5px',
     fontWeight: '700',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     letterSpacing: '0.05em',
   },
   statValue: {
-    fontSize: '16px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '18px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     letterSpacing: '-0.3px',
   },
   statSub: {
     fontSize: '10.5px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     fontWeight: '400',
   },
   insightCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '14px',
-    padding: '12px 14px',
-    border: '1px solid #E5E9F0',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '14px 16px',
+    border: '1px solid var(--border-cream)',
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    boxShadow: 'none',
   },
   insightIconCircle: {
     width: '34px',
     height: '34px',
-    borderRadius: '10px',
-    backgroundColor: '#EBF2F9',
+    borderRadius: '12px',
+    backgroundColor: 'rgba(0, 191, 165, 0.15)',
+    border: '1px solid var(--border-cream)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -260,21 +267,22 @@ const styles = {
     flexDirection: 'column',
   },
   insightHeading: {
-    fontSize: '12.5px',
+    fontSize: '13px',
     fontWeight: '600',
-    color: '#172B4D',
+    color: 'var(--text-on-cream)',
   },
   insightDetail: {
     fontSize: '11.5px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     marginTop: '1px',
+    lineHeight: '1.4',
   },
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
-    padding: '20px 18px',
-    border: '1px solid #E5E9F0',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '22px 20px',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
   },
   cardHeader: {
     display: 'flex',
@@ -283,17 +291,18 @@ const styles = {
     marginBottom: '16px',
   },
   cardTitle: {
-    fontSize: '15px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '16px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
   },
   categoryCountBadge: {
     fontSize: '11px',
-    color: '#8792A2',
-    backgroundColor: '#F7F8FA',
-    border: '1px solid #E5E9F0',
-    padding: '2px 8px',
-    borderRadius: '4px',
+    color: 'var(--text-muted-cream)',
+    backgroundColor: 'var(--bg-cream)',
+    border: '1px solid var(--border-cream)',
+    padding: '3px 10px',
+    borderRadius: '9999px',
     fontWeight: '600',
   },
   categoryList: {
@@ -325,7 +334,7 @@ const styles = {
   catName: {
     fontSize: '13px',
     fontWeight: '500',
-    color: '#202938',
+    color: 'var(--text-on-cream)',
   },
   catRight: {
     display: 'flex',
@@ -335,19 +344,20 @@ const styles = {
   catTotal: {
     fontSize: '13px',
     fontWeight: '600',
-    color: '#172B4D',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
   },
   catPct: {
     fontSize: '11.5px',
     fontWeight: '600',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     minWidth: '28px',
     textAlign: 'right',
   },
   progressTrack: {
     width: '100%',
-    height: '5px',
-    backgroundColor: '#F1F4F8',
+    height: '6px',
+    backgroundColor: 'var(--olive-track)',
     borderRadius: '9999px',
     overflow: 'hidden',
   },

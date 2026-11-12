@@ -4,11 +4,11 @@ import { getReceipt } from '../api/receipts.js'
 import { apiBase } from '../api/client.js'
 
 const CATEGORY_THEMES = {
-  Groceries: { bg: '#EBF2F9', color: '#3978B8' },
-  Restaurant: { bg: '#FEF3C7', color: '#B45309' },
-  Utilities: { bg: '#E8F5E9', color: '#1B8754' },
-  Transport: { bg: '#F3E8FF', color: '#7E22CE' },
-  Others: { bg: '#F1F4F8', color: '#8792A2' },
+  Groceries: { bg: 'rgba(0, 191, 165, 0.18)', color: '#0B6B5A' },
+  Restaurant: { bg: 'rgba(11, 107, 90, 0.18)', color: '#0B6B5A' },
+  Utilities: { bg: 'rgba(95, 211, 188, 0.25)', color: '#0B6B5A' },
+  Transport: { bg: 'rgba(46, 139, 122, 0.2)', color: '#0B6B5A' },
+  Others: { bg: 'rgba(155, 181, 168, 0.25)', color: '#4A6055' },
 }
 
 function formatINR(val) {
@@ -26,6 +26,7 @@ function formatDate(dateStr) {
   if (!dateStr) return '—'
   try {
     const d = new Date(dateStr)
+    if (isNaN(d.getTime())) return dateStr
     return d.toLocaleDateString('en-GB', {
       day: 'numeric',
       month: 'short',
@@ -62,7 +63,7 @@ export default function ReceiptDetailPage() {
       {/* Header */}
       <div style={styles.header}>
         <button style={styles.backButton} onClick={() => navigate(-1)} aria-label="Go back">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#172B4D" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-on-cream)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
           <span style={styles.backText}>Back</span>
@@ -77,7 +78,7 @@ export default function ReceiptDetailPage() {
         </div>
       ) : error ? (
         <div style={styles.errorBox}>
-          <p style={{ color: '#D32F2F', fontSize: '14px', marginBottom: '14px' }}>{error}</p>
+          <p style={{ color: 'var(--danger)', fontSize: '14px', marginBottom: '16px' }}>{error}</p>
           <button className="btn btn-primary" onClick={() => navigate(-1)}>
             Go Back
           </button>
@@ -112,7 +113,7 @@ export default function ReceiptDetailPage() {
 
             <div style={styles.detailRow}>
               <span style={styles.rowLabel}>Receipt ID</span>
-              <span style={{ ...styles.rowValue, fontFamily: 'monospace', fontSize: '12px', color: '#8792A2' }}>
+              <span style={{ ...styles.rowValue, fontFamily: 'monospace', fontSize: '12px', color: 'var(--text-muted-cream)' }}>
                 {receipt.id}
               </span>
             </div>
@@ -152,10 +153,10 @@ export default function ReceiptDetailPage() {
                     <div style={{ flex: 1, minWidth: 0, paddingRight: '8px' }}>
                       <span style={styles.itemName}>{item.name}</span>
                     </div>
-                    <span style={{ width: '50px', textAlign: 'center', fontSize: '13px', color: '#8792A2' }} className="tabular-nums">
+                    <span style={{ width: '50px', textAlign: 'center', fontSize: '13px', color: 'var(--text-muted-cream)' }} className="tabular-nums">
                       {item.quantity || 1}
                     </span>
-                    <span style={{ width: '80px', textAlign: 'right', fontSize: '13.5px', fontWeight: '600', color: '#172B4D' }} className="tabular-nums">
+                    <span style={{ width: '80px', textAlign: 'right', fontSize: '13.5px', fontWeight: '600', fontFamily: 'var(--font-serif)', color: 'var(--text-on-cream)' }} className="tabular-nums">
                       {formatINR(item.total_price || item.unit_price)}
                     </span>
                   </div>
@@ -193,13 +194,16 @@ const styles = {
   container: {
     width: '100%',
     boxSizing: 'border-box',
+    backgroundColor: 'var(--bg-cream)',
+    color: 'var(--text-on-cream)',
+    minHeight: '100%',
   },
   header: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '16px',
-    paddingTop: '2px',
+    marginBottom: '18px',
+    paddingTop: '4px',
   },
   backButton: {
     display: 'flex',
@@ -213,19 +217,21 @@ const styles = {
   backText: {
     fontSize: '13.5px',
     fontWeight: '600',
-    color: '#172B4D',
+    color: 'var(--text-on-cream)',
+    fontFamily: 'var(--font-sans)',
   },
   headerTitle: {
-    fontSize: '17px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '18px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
   },
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
-    padding: '20px 18px',
-    border: '1px solid #E5E9F0',
-    boxShadow: '0 1px 3px rgba(23, 43, 77, 0.04)',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
+    padding: '22px 20px',
+    border: '1px solid var(--border-cream)',
+    boxShadow: 'none',
   },
   topRow: {
     display: 'flex',
@@ -235,39 +241,42 @@ const styles = {
   },
   metaLabel: {
     fontSize: '10.5px',
-    fontWeight: '700',
-    color: '#8792A2',
+    fontWeight: '600',
+    color: 'var(--text-muted-cream)',
     letterSpacing: '0.06em',
   },
   merchantName: {
-    fontSize: '18px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '20px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     marginTop: '2px',
   },
   categoryBadge: {
     fontSize: '11px',
     fontWeight: '600',
     padding: '3px 10px',
-    borderRadius: '6px',
+    borderRadius: '9999px',
+    border: '1px solid var(--border-cream)',
   },
   amountBlock: {
     margin: '12px 0 16px',
   },
   amountLabel: {
     fontSize: '11.5px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
     fontWeight: '500',
   },
   totalAmount: {
-    fontSize: '28px',
-    fontWeight: '700',
-    color: '#172B4D',
+    fontSize: '30px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
     marginTop: '2px',
   },
   divider: {
     height: '1px',
-    backgroundColor: '#EEF2F6',
+    backgroundColor: 'var(--border-cream)',
     margin: '14px 0',
   },
   detailRow: {
@@ -278,17 +287,18 @@ const styles = {
   },
   rowLabel: {
     fontSize: '13px',
-    color: '#8792A2',
+    color: 'var(--text-muted-cream)',
   },
   rowValue: {
     fontSize: '13px',
-    fontWeight: '600',
-    color: '#202938',
+    fontWeight: '500',
+    color: 'var(--text-on-cream)',
   },
   sectionHeading: {
-    fontSize: '14.5px',
-    fontWeight: '700',
-    color: '#202938',
+    fontSize: '15px',
+    fontWeight: '600',
+    fontFamily: 'var(--font-serif)',
+    color: 'var(--text-on-cream)',
   },
   sectionHeaderRow: {
     display: 'flex',
@@ -298,19 +308,20 @@ const styles = {
   },
   itemCountBadge: {
     fontSize: '11.5px',
-    color: '#8792A2',
-    backgroundColor: '#F7F8FA',
-    border: '1px solid #E5E9F0',
-    padding: '2px 8px',
-    borderRadius: '4px',
+    color: 'var(--text-muted-cream)',
+    backgroundColor: 'var(--bg-cream)',
+    border: '1px solid var(--border-cream)',
+    padding: '2px 10px',
+    borderRadius: '9999px',
+    fontWeight: '600',
   },
   tableHeader: {
     display: 'flex',
     paddingBottom: '8px',
-    borderBottom: '1px solid #EEF2F6',
+    borderBottom: '1px solid var(--border-cream)',
     fontSize: '11.5px',
-    fontWeight: '700',
-    color: '#8792A2',
+    fontWeight: '600',
+    color: 'var(--text-muted-cream)',
     letterSpacing: '0.04em',
     textTransform: 'uppercase',
   },
@@ -322,19 +333,19 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     padding: '10px 0',
-    borderBottom: '1px solid #EEF2F6',
+    borderBottom: '1px solid var(--border-cream)',
   },
   itemName: {
     fontSize: '13.5px',
     fontWeight: '500',
-    color: '#202938',
+    color: 'var(--text-on-cream)',
   },
   imageWrapper: {
     marginTop: '12px',
-    borderRadius: '12px',
+    borderRadius: '16px',
     overflow: 'hidden',
-    backgroundColor: '#F7F8FA',
-    border: '1px solid #E5E9F0',
+    backgroundColor: 'var(--bg-cream)',
+    border: '1px solid var(--border-cream)',
     maxHeight: '300px',
     display: 'flex',
     justifyContent: 'center',
@@ -352,28 +363,28 @@ const styles = {
   },
   toggleLink: {
     fontSize: '12.5px',
-    color: '#3978B8',
+    color: 'var(--accent-dark)',
     fontWeight: '600',
   },
   rawText: {
     marginTop: '12px',
-    backgroundColor: '#F7F8FA',
-    borderRadius: '10px',
+    backgroundColor: 'var(--bg-cream)',
+    borderRadius: '16px',
     padding: '12px',
     fontSize: '11.5px',
-    color: '#202938',
+    color: 'var(--text-on-cream)',
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-all',
     fontFamily: 'monospace',
     maxHeight: '180px',
     overflowY: 'auto',
-    border: '1px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
   },
   errorBox: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '16px',
+    backgroundColor: 'var(--surface-cream)',
+    borderRadius: '24px',
     padding: '32px 20px',
     textAlign: 'center',
-    border: '1px solid #E5E9F0',
+    border: '1px solid var(--border-cream)',
   },
 }
